@@ -21,14 +21,14 @@ import {
 import { sessionsApi } from '@/lib/api/sessions'
 import { analysisApi } from '@/lib/api/analysis'
 import { usePlayers } from '@/lib/hooks/usePlayers'
-import { useToast } from '@/hooks/use-toast'
+import { toast } from 'sonner'
 import { CheckCircle2, Loader2 } from 'lucide-react'
 
 const STEPS = ['Session Info', 'Upload Video', 'Analyze']
 
 export default function NewSessionPage() {
     const router = useRouter()
-    const { toast } = useToast()
+
     const { players } = usePlayers()
 
     const [step, setStep] = useState(0)
@@ -46,7 +46,7 @@ export default function NewSessionPage() {
     const handleCreateSession = async (e) => {
         e.preventDefault()
         if (!form.player_id) {
-            toast({ title: 'Please select a player', variant: 'destructive' })
+            toast.error('Please select a player')
             return
         }
         setLoading(true)
@@ -57,12 +57,10 @@ export default function NewSessionPage() {
             })
             setSession(created)
             setStep(1)
-            toast({ title: 'Session created!', description: 'Now upload your video.' })
+            toast.success('Session created!', { description: 'Now upload your video.' })
         } catch (err) {
-            toast({
-                title: 'Failed to create session',
+            toast.error('Failed to create session', {
                 description: err.response?.data?.detail || 'Something went wrong',
-                variant: 'destructive',
             })
         } finally {
             setLoading(false)
@@ -74,13 +72,11 @@ export default function NewSessionPage() {
         setLoading(true)
         try {
             await sessionsApi.uploadVideo(session.id, file, onProgress)
-            toast({ title: 'Video uploaded!', description: 'Ready to analyze.' })
+            toast.success('Video uploaded!', { description: 'Ready to analyze.' })
             setStep(2)
         } catch (err) {
-            toast({
-                title: 'Upload failed',
+            toast.error('Upload failed', {
                 description: err.response?.data?.detail || 'Something went wrong',
-                variant: 'destructive',
             })
             throw err
         } finally {
@@ -98,12 +94,10 @@ export default function NewSessionPage() {
             )
             const id = result?.task_id || result
             setTaskId(typeof id === 'string' ? id : null)
-            toast({ title: 'Analysis started!', description: 'This may take a few minutes.' })
+            toast.success('Analysis started!', { description: 'This may take a few minutes.' })
         } catch (err) {
-            toast({
-                title: 'Analysis failed to start',
+            toast.error('Analysis failed to start', {
                 description: err.response?.data?.detail || 'Something went wrong',
-                variant: 'destructive',
             })
         } finally {
             setLoading(false)

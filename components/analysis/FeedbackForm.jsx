@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
-import { useToast } from '@/hooks/use-toast'
+import { toast } from 'sonner'
 import { useAuth } from '@/lib/hooks/useAuth'
 import { formatDateTime } from '@/lib/utils/formatters'
 import { Loader2, Star, Plus, X } from 'lucide-react'
@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input'
 
 export default function FeedbackForm({ sessionId, existingFeedback = [], onSuccess }) {
     const { isCoach } = useAuth()
-    const { toast } = useToast()
+
     const [loading, setLoading] = useState(false)
     const [showForm, setShowForm] = useState(false)
     const [rating, setRating] = useState(5)
@@ -35,7 +35,7 @@ export default function FeedbackForm({ sessionId, existingFeedback = [], onSucce
 
     const handleSubmit = async () => {
         if (!comments.trim()) {
-            toast({ title: 'Please add a comment', variant: 'destructive' })
+            toast.error('Please add a comment')
             return
         }
         setLoading(true)
@@ -45,17 +45,15 @@ export default function FeedbackForm({ sessionId, existingFeedback = [], onSucce
                 drill_recommendations: drills,
                 rating,
             })
-            toast({ title: 'Feedback saved!' })
+            toast.success('Feedback saved!')
             setShowForm(false)
             setComments('')
             setDrills([])
             setRating(5)
             if (onSuccess) onSuccess()
         } catch (err) {
-            toast({
-                title: 'Failed to save feedback',
+            toast.error('Failed to save feedback', {
                 description: err.response?.data?.detail || 'Something went wrong',
-                variant: 'destructive',
             })
         } finally {
             setLoading(false)

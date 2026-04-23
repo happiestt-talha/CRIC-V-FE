@@ -29,7 +29,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { adminApi } from '@/lib/api/admin'
 import { formatDate, getStatusBadgeVariant } from '@/lib/utils/formatters'
-import { useToast } from '@/hooks/use-toast'
+import { toast } from 'sonner'
 import {
     Users,
     Video,
@@ -40,7 +40,7 @@ import {
 } from 'lucide-react'
 
 export default function AdminPage() {
-    const { toast } = useToast()
+
     const [stats, setStats] = useState(null)
     const [users, setUsers] = useState([])
     const [sessions, setSessions] = useState([])
@@ -67,9 +67,9 @@ export default function AdminPage() {
         try {
             await adminApi.deleteSession(sessionId)
             setSessions((prev) => prev.filter((s) => s.id !== sessionId))
-            toast({ title: 'Session deleted successfully' })
+            toast.success('Session deleted successfully')
         } catch {
-            toast({ title: 'Failed to delete session', variant: 'destructive' })
+            toast.error('Failed to delete session')
         } finally {
             setDeletingId(null)
         }

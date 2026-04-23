@@ -19,12 +19,13 @@ import { sessionsApi } from '@/lib/api/sessions'
 import { formatDate, getStatusBadgeVariant } from '@/lib/utils/formatters'
 import { API_BASE_URL } from '@/lib/utils/constants'
 import { RefreshCw, Video, Play } from 'lucide-react'
-import { useToast } from '@/hooks/use-toast'
+import { toast } from 'sonner'
+import Cookies from 'js-cookie'
 
 export default function SessionDetailPage({ params }) {
     const { id } = use(params)
     const sessionId = parseInt(id)
-    const { toast } = useToast()
+
 
     const { session, loading: sessionLoading } = useSession(sessionId)
     const { analysis, loading: analysisLoading, error: analysisError } = useSessionAnalysis(sessionId)
@@ -43,7 +44,8 @@ export default function SessionDetailPage({ params }) {
 
     useEffect(() => {
         if (session?.video_path) {
-            setVideoUrl(`${API_BASE_URL}/sessions/${sessionId}/annotated-video`)
+            const token = Cookies.get('access_token')
+            setVideoUrl(`${API_BASE_URL}/sessions/${sessionId}/annotated-video?token=${token}`)
         }
     }, [session, sessionId])
 
@@ -51,9 +53,9 @@ export default function SessionDetailPage({ params }) {
         setReanalyzing(true)
         try {
             await analysisApi.triggerAnalysis(sessionId, session?.session_type || 'bowling')
-            toast({ title: 'Re-analysis started!', description: 'Refresh in a moment to see updated results.' })
+            toast.success('Re-analysis started!', { description: 'Refresh in a moment to see updated results.' })
         } catch (err) {
-            toast({ title: 'Failed to start analysis', variant: 'destructive' })
+            toast.error('Failed to start analysis')
         } finally {
             setReanalyzing(false)
         }
@@ -127,7 +129,9 @@ export default function SessionDetailPage({ params }) {
                                     <div className="space-y-3">
                                         <div className="aspect-video bg-slate-800 rounded-lg overflow-hidden">
                                             <video
+                                                key={videoUrl}
                                                 src={videoUrl}
+                                                crossOrigin="anonymous"
                                                 controls
                                                 className="w-full h-full object-contain"
                                                 poster={
