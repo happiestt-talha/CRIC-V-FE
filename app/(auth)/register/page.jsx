@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/hooks/useAuth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -12,6 +13,7 @@ import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
 
 export default function RegisterPage() {
+    const router = useRouter()
     const { register } = useAuth()
     const [loading, setLoading] = useState(false)
     const [form, setForm] = useState({
@@ -26,9 +28,8 @@ export default function RegisterPage() {
         setLoading(true)
         try {
             await register(form)
-            toast.success('Account created!', {
-                description: 'Please sign in with your credentials.',
-            })
+            toast.success('Account created!')
+            router.push(`/register/verify-email?email=${encodeURIComponent(form.email)}`)
         } catch (err) {
             toast.error('Registration failed', {
                 description: err.response?.data?.detail || 'Something went wrong'
@@ -107,9 +108,16 @@ export default function RegisterPage() {
                                     <SelectContent className="bg-slate-800 border-slate-700">
                                         <SelectItem value="coach" className="text-white hover:bg-slate-700">Coach</SelectItem>
                                         <SelectItem value="player" className="text-white hover:bg-slate-700">Player</SelectItem>
-                                        <SelectItem value="admin" className="text-white hover:bg-slate-700">Admin</SelectItem>
                                     </SelectContent>
                                 </Select>
+                                {form.role === 'player' && (
+                                    <div className="mt-2 p-2 bg-blue-500/10 border border-blue-500/20 rounded text-[11px] text-blue-300 flex items-start gap-2">
+                                        <span className="shrink-0 mt-0.5">ℹ️</span>
+                                        <p>
+                                            Note: If your coach has already registered you, please use the credentials they provided instead of creating a new account.
+                                        </p>
+                                    </div>
+                                )}
                             </div>
                             <Button
                                 type="submit"

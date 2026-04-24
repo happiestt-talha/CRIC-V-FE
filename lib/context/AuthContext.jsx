@@ -17,7 +17,12 @@ export function AuthProvider({ children }) {
         if (token) {
             authApi
                 .getMe()
-                .then((userData) => setUser(userData))
+                .then((userData) => {
+                    setUser(userData)
+                    if (userData.must_change_password) {
+                        router.push('/change-password')
+                    }
+                })
                 .catch(() => {
                     Cookies.remove('access_token')
                     setUser(null)
@@ -29,10 +34,15 @@ export function AuthProvider({ children }) {
     }, [])
 
     const login = async (username, password) => {
-        await authApi.login(username, password)
+        const data = await authApi.login(username, password)
         const userData = await authApi.getMe()
         setUser(userData)
-        router.push('/dashboard')
+        
+        if (data.must_change_password) {
+            router.push('/change-password')
+        } else {
+            router.push('/dashboard')
+        }
     }
 
     const register = async (userData) => {

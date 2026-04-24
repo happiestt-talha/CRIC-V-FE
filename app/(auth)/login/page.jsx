@@ -3,30 +3,63 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/lib/hooks/useAuth'
+import { authApi } from '@/lib/api/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { toast } from 'sonner'
-import { Loader2 } from 'lucide-react'
+import { Loader2, AlertCircle } from 'lucide-react'
 
 export default function LoginPage() {
     const { login } = useAuth()
     const [loading, setLoading] = useState(false)
+    const [resending, setResending] = useState(false)
     const [form, setForm] = useState({ username: '', password: '' })
+    const [isUnverified, setIsUnverified] = useState(false)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         setLoading(true)
+        setIsUnverified(false)
         try {
             await login(form.username, form.password)
             toast.success('Welcome back!', { description: 'Logged in successfully.' })
         } catch (err) {
-            toast.error('Login failed', {
-                description: err.response?.data?.detail || 'Invalid credentials'
-            })
+            const detail = err.response?.data?.detail || ''
+            if (err.response?.status === 403 && detail.toLowerCase().includes('verify your email')) {
+                setIsUnverified(true)
+                toast.error('Account not verified', { description: detail })
+            } else {
+                toast.error('Login failed', {
+                    description: detail || 'Invalid credentials'
+                })
+            }
         } finally {
             setLoading(false)
+        }
+    }
+
+    const handleResend = async () => {
+        // If username is an email, use it. Otherwise, we might need the user to provide it.
+        // For simplicity, we'll try to use the username if it contains '@'
+        const email = form.username.includes('@') ? form.username : null
+        
+        if (!email) {
+            toast.error('Email not detected', { description: 'Please enter your email in the username field to resend verification.' })
+            return
+        }
+
+        setResending(true)
+        try {
+            await authApi.resendVerification(email)
+            toast.success('Verification email resent!')
+        } catch (err) {
+            toast.error('Failed to resend', {
+                description: err.response?.data?.detail || 'Please try again later.'
+            })
+        } finally {
+            setResending(false)
         }
     }
 
@@ -50,6 +83,24 @@ export default function LoginPage() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
+                        {isUnverified && (
+                            <div className="mb-6 p-3 bg-red-500/10 border border-red-500/20 rounded-lg flex items-start gap-3">
+                                <AlertCircle className="h-5 w-5 text-red-500 shrink-0 mt-0.5" />
+                                <div className="space-y-2">
+                                    <p className="text-sm text-red-200">
+                                        Your email is not verified. Please check your inbox for the verification link.
+                                    </p>
+                                    <button 
+                                        onClick={handleResend}
+                                        disabled={resending}
+                                        className="text-sm text-green-400 hover:text-green-300 font-medium disabled:opacity-50"
+                                    >
+                                        {resending ? 'Resending...' : 'Resend verification email'}
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div className="space-y-2">
                                 <Label htmlFor="username" className="text-slate-300">
@@ -78,6 +129,14 @@ export default function LoginPage() {
                                     required
                                     className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
                                 />
+                                <div className="flex justify-end">
+                                    <Link 
+                                        href="/forgot-password" 
+                                        className="text-xs text-green-400 hover:text-green-300 font-medium"
+                                    >
+                                        Forgot password?
+                                    </Link>
+                                </div>
                             </div>
                             <Button
                                 type="submit"
