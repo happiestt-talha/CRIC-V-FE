@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { authApi } from '@/lib/api/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { PasswordInput } from '@/components/ui/password-input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { toast } from 'sonner'
@@ -101,9 +102,8 @@ function ResetPasswordForm() {
                         <Label htmlFor="password" className="text-slate-300">
                             New Password
                         </Label>
-                        <Input
+                        <PasswordInput
                             id="password"
-                            type="password"
                             placeholder="••••••••"
                             value={form.password}
                             onChange={(e) => setForm({ ...form, password: e.target.value })}
@@ -116,9 +116,8 @@ function ResetPasswordForm() {
                         <Label htmlFor="confirmPassword" className="text-slate-300">
                             Confirm Password
                         </Label>
-                        <Input
+                        <PasswordInput
                             id="confirmPassword"
-                            type="password"
                             placeholder="••••••••"
                             value={form.confirmPassword}
                             onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}

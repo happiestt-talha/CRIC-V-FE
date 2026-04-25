@@ -118,46 +118,61 @@ export default function SessionDetailPage({ params }) {
                     {/* Left column — video */}
                     <div className="xl:col-span-1 space-y-4">
                         <Card className="bg-slate-900 border-slate-800">
-                            <CardHeader className="pb-2">
+                            <CardHeader className="pb-2 flex flex-row items-center justify-between">
                                 <CardTitle className="text-white text-sm flex items-center gap-2">
                                     <Video className="h-4 w-4" />
-                                    Session Video
+                                    Videos ({session.videos?.length || 0})
                                 </CardTitle>
+                                <Button 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-7 text-[10px] text-green-500 hover:text-green-400 p-0"
+                                    onClick={() => router.push(`/sessions/${sessionId}/upload`)}
+                                >
+                                    + Add More
+                                </Button>
                             </CardHeader>
-                            <CardContent>
-                                {session.video_path ? (
-                                    <div className="space-y-3">
-                                        <div className="aspect-video bg-slate-800 rounded-lg overflow-hidden">
-                                            <video
-                                                key={videoUrl}
-                                                src={videoUrl}
-                                                crossOrigin="anonymous"
-                                                controls
-                                                className="w-full h-full object-contain"
-                                                poster={
-                                                    session.thumbnail_path
-                                                        ? `${API_BASE_URL}/${session.thumbnail_path}`
-                                                        : undefined
-                                                }
-                                            >
-                                                Your browser does not support video playback.
-                                            </video>
-                                        </div>
+                            <CardContent className="space-y-4">
+                                {session.videos && session.videos.length > 0 ? (
+                                    <div className="space-y-2">
+                                        {session.videos.map((vid) => (
+                                            <div key={vid.id} className="p-3 bg-slate-800/50 rounded border border-slate-700 flex items-center justify-between">
+                                                <div className="min-w-0">
+                                                    <p className="text-xs text-white font-medium truncate">{vid.original_filename}</p>
+                                                    <Badge className={cn(
+                                                        "text-[8px] h-3 px-1 mt-1",
+                                                        vid.status === 'done' ? "bg-green-500/10 text-green-500" : "bg-slate-700 text-slate-400"
+                                                    )}>
+                                                        {vid.status}
+                                                    </Badge>
+                                                </div>
+                                                <Button 
+                                                    size="sm" 
+                                                    variant="ghost" 
+                                                    className="h-7 w-7 p-0 text-slate-400"
+                                                    onClick={() => router.push(`/sessions/${sessionId}/analyze?video=${vid.id}`)}
+                                                >
+                                                    <Play className="h-3 w-3" />
+                                                </Button>
+                                            </div>
+                                        ))}
                                         <Button
-                                            variant="outline"
-                                            size="sm"
-                                            className="w-full border-slate-700 text-slate-300 hover:bg-slate-800"
-                                            onClick={handleReanalyze}
-                                            disabled={reanalyzing}
+                                            className="w-full bg-green-600 hover:bg-green-700 text-white text-xs mt-2"
+                                            onClick={() => router.push(`/sessions/${sessionId}/analyze`)}
                                         >
-                                            <RefreshCw className={`h-3.5 w-3.5 mr-2 ${reanalyzing ? 'animate-spin' : ''}`} />
-                                            Re-analyze
+                                            Analyze All Videos
                                         </Button>
                                     </div>
                                 ) : (
-                                    <div className="aspect-video bg-slate-800 rounded-lg flex flex-col items-center justify-center">
-                                        <Play className="h-10 w-10 text-slate-600 mb-2" />
-                                        <p className="text-slate-500 text-sm">No video uploaded</p>
+                                    <div className="py-8 text-center border-2 border-dashed border-slate-800 rounded-lg">
+                                        <p className="text-slate-500 text-xs mb-3">No videos uploaded yet</p>
+                                        <Button 
+                                            size="sm" 
+                                            className="bg-slate-800 text-white hover:bg-slate-700"
+                                            onClick={() => router.push(`/sessions/${sessionId}/upload`)}
+                                        >
+                                            Upload Now
+                                        </Button>
                                     </div>
                                 )}
                             </CardContent>

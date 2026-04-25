@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { authApi } from '@/lib/api/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { PasswordInput } from '@/components/ui/password-input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { toast } from 'sonner'
@@ -77,9 +78,8 @@ export default function ChangePasswordPage() {
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div className="space-y-2">
                                 <Label htmlFor="current" className="text-slate-300">Current Password</Label>
-                                <Input
+                                <PasswordInput
                                     id="current"
-                                    type="password"
                                     value={form.current_password}
                                     onChange={(e) => setForm({ ...form, current_password: e.target.value })}
                                     required
@@ -88,9 +88,8 @@ export default function ChangePasswordPage() {
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="new" className="text-slate-300">New Password</Label>
-                                <Input
+                                <PasswordInput
                                     id="new"
-                                    type="password"
                                     placeholder="Min 8 characters"
                                     value={form.new_password}
                                     onChange={(e) => setForm({ ...form, new_password: e.target.value })}
@@ -101,9 +100,8 @@ export default function ChangePasswordPage() {
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="confirm" className="text-slate-300">Confirm New Password</Label>
-                                <Input
+                                <PasswordInput
                                     id="confirm"
-                                    type="password"
                                     value={form.confirm_password}
                                     onChange={(e) => setForm({ ...form, confirm_password: e.target.value })}
                                     required

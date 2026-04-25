@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/hooks/useAuth'
 import { authApi } from '@/lib/api/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { PasswordInput } from '@/components/ui/password-input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { toast } from 'sonner'
@@ -120,9 +121,8 @@ export default function LoginPage() {
                                 <Label htmlFor="password" className="text-slate-300">
                                     Password
                                 </Label>
-                                <Input
+                                <PasswordInput
                                     id="password"
-                                    type="password"
                                     placeholder="••••••••"
                                     value={form.password}
                                     onChange={(e) => setForm({ ...form, password: e.target.value })}
