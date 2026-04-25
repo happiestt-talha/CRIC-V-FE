@@ -21,11 +21,13 @@ import { API_BASE_URL } from '@/lib/utils/constants'
 import { RefreshCw, Video, Play } from 'lucide-react'
 import { toast } from 'sonner'
 import Cookies from 'js-cookie'
+import { cn } from '@/lib/utils'
+import { useRouter } from 'next/navigation'
 
 export default function SessionDetailPage({ params }) {
     const { id } = use(params)
     const sessionId = parseInt(id)
-
+    const router = useRouter()
 
     const { session, loading: sessionLoading } = useSession(sessionId)
     const { analysis, loading: analysisLoading, error: analysisError } = useSessionAnalysis(sessionId)
@@ -123,9 +125,9 @@ export default function SessionDetailPage({ params }) {
                                     <Video className="h-4 w-4" />
                                     Videos ({session.videos?.length || 0})
                                 </CardTitle>
-                                <Button 
-                                    variant="ghost" 
-                                    size="sm" 
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
                                     className="h-7 text-[10px] text-green-500 hover:text-green-400 p-0"
                                     onClick={() => router.push(`/sessions/${sessionId}/upload`)}
                                 >
@@ -146,9 +148,9 @@ export default function SessionDetailPage({ params }) {
                                                         {vid.status}
                                                     </Badge>
                                                 </div>
-                                                <Button 
-                                                    size="sm" 
-                                                    variant="ghost" 
+                                                <Button
+                                                    size="sm"
+                                                    variant="ghost"
                                                     className="h-7 w-7 p-0 text-slate-400"
                                                     onClick={() => router.push(`/sessions/${sessionId}/analyze?video=${vid.id}`)}
                                                 >
@@ -166,8 +168,8 @@ export default function SessionDetailPage({ params }) {
                                 ) : (
                                     <div className="py-8 text-center border-2 border-dashed border-slate-800 rounded-lg">
                                         <p className="text-slate-500 text-xs mb-3">No videos uploaded yet</p>
-                                        <Button 
-                                            size="sm" 
+                                        <Button
+                                            size="sm"
                                             className="bg-slate-800 text-white hover:bg-slate-700"
                                             onClick={() => router.push(`/sessions/${sessionId}/upload`)}
                                         >

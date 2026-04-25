@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import { cn } from '@/lib/utils'
 import Navbar from '@/components/layout/Navbar'
 import PageHeader from '@/components/layout/PageHeader'
 import SessionStepper from '@/components/sessions/SessionStepper'
