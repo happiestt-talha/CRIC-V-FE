@@ -11,13 +11,16 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { LogOut, User, Settings } from 'lucide-react'
+import { LogOut, User, Menu } from 'lucide-react'
 import { toast } from 'sonner'
+import UserAvatar from '@/components/shared/UserAvatar'
+import { useSidebar } from '@/lib/hooks/useSidebar'
+import { Badge } from '@/components/ui/badge'
 
 export default function Navbar({ title = 'Dashboard' }) {
     const { user, logout } = useAuth()
     const router = useRouter()
+    const { openMobile } = useSidebar()
 
     const handleLogout = async () => {
         try {
@@ -29,14 +32,26 @@ export default function Navbar({ title = 'Dashboard' }) {
     }
 
     return (
-        <header className="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6 sticky top-0 z-30">
-            <h2 className="text-white font-semibold text-lg">{title}</h2>
+        <header className="h-16 bg-[#0f172a] border-b border-slate-800 flex items-center justify-between px-4 lg:px-6 sticky top-0 z-40">
+            <div className="flex items-center gap-4">
+                {/* Mobile Menu Button */}
+                <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    onClick={openMobile}
+                    className="lg:hidden text-slate-400 hover:text-white"
+                >
+                    <Menu className="h-6 w-6" />
+                </Button>
+                
+                <h2 className="text-white font-semibold text-lg truncate max-w-[200px] sm:max-w-none">{title}</h2>
+            </div>
 
             <div className="flex items-center gap-3">
                 {/* Role badge */}
-                <span className="hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-600/20 text-green-400 border border-green-600/30 capitalize">
+                <Badge variant="outline" className="hidden sm:inline-flex bg-green-500/10 text-green-500 border-green-500/20 capitalize">
                     {user?.role}
-                </span>
+                </Badge>
 
                 {/* User menu */}
                 <DropdownMenu>
@@ -45,11 +60,7 @@ export default function Navbar({ title = 'Dashboard' }) {
                             variant="ghost"
                             className="relative h-9 w-9 rounded-full p-0 hover:bg-slate-800"
                         >
-                            <Avatar className="h-9 w-9">
-                                <AvatarFallback className="bg-green-600/30 text-green-400 font-bold">
-                                    {user?.username?.charAt(0)?.toUpperCase() || 'U'}
-                                </AvatarFallback>
-                            </Avatar>
+                            <UserAvatar user={user} size="sm" />
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
@@ -69,7 +80,7 @@ export default function Navbar({ title = 'Dashboard' }) {
                         <DropdownMenuSeparator className="bg-slate-800" />
                         <DropdownMenuItem
                             className="hover:bg-slate-800 cursor-pointer"
-                            onClick={() => router.push('/dashboard')}
+                            onClick={() => router.push('/profile')}
                         >
                             <User className="mr-2 h-4 w-4" />
                             Profile

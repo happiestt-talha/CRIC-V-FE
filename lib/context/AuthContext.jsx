@@ -59,9 +59,16 @@ export function AuthProvider({ children }) {
     const isAdmin = user?.role === 'admin'
     const isCoach = user?.role === 'coach' || user?.role === 'admin'
 
+    const updateUser = (updatedFields) => {
+        setUser(prev => ({
+            ...prev,
+            ...updatedFields
+        }))
+    }
+
     return (
         <AuthContext.Provider
-            value={{ user, loading, login, register, logout, isAdmin, isCoach }}
+            value={{ user, loading, login, register, logout, isAdmin, isCoach, updateUser }}
         >
             {children}
         </AuthContext.Provider>

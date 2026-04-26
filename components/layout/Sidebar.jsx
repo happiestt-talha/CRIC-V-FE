@@ -3,134 +3,177 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useAuth } from '@/lib/hooks/useAuth'
+import { useSidebar } from '@/lib/hooks/useSidebar'
 import { cn } from '@/lib/utils'
 import {
     LayoutDashboard,
     Users,
     Video,
-    BarChart3,
-    Shield,
+    BarChart2,
+    UserCircle,
+    ChevronLeft,
     ChevronRight,
+    X,
+    LogOut
 } from 'lucide-react'
+import UserAvatar from '@/components/shared/UserAvatar'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@/components/ui/tooltip'
+import { Button } from '@/components/ui/button'
 
 const navItems = [
-    {
-        label: 'Dashboard',
-        href: '/dashboard',
-        icon: LayoutDashboard,
-    },
-    {
-        label: 'Players',
-        href: '/players',
-        icon: Users,
-    },
-    {
-        label: 'Sessions',
-        href: '/sessions',
-        icon: Video,
-    },
-    {
-        label: 'Analysis',
-        href: '/sessions',
-        icon: BarChart3,
-    },
-]
-
-const adminItems = [
-    {
-        label: 'Admin Panel',
-        href: '/admin',
-        icon: Shield,
-    },
+    { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { label: 'Players', href: '/players', icon: Users },
+    { label: 'Sessions', href: '/sessions', icon: Video },
+    { label: 'Analysis', href: '/analysis', icon: BarChart2 },
+    { label: 'Profile', href: '/profile', icon: UserCircle },
 ]
 
 export default function Sidebar() {
     const pathname = usePathname()
-    const { user, isAdmin } = useAuth()
+    const { user } = useAuth()
+    const { isCollapsed, isMobileOpen, toggle, closeMobile } = useSidebar()
+
+    const NavItem = ({ item }) => {
+        const Icon = item.icon
+        const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
+        
+        const content = (
+            <Link
+                href={item.href}
+                onClick={() => { if (isMobileOpen) closeMobile() }}
+                className={cn(
+                    'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group relative',
+                    isActive
+                        ? 'bg-green-500/10 text-green-500 border-l-2 border-green-500 rounded-l-none'
+                        : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                )}
+            >
+                <Icon className={cn("h-5 w-5 shrink-0", isActive && "text-green-500")} />
+                {!isCollapsed && <span className="flex-1 truncate">{item.label}</span>}
+            </Link>
+        )
+
+        if (isCollapsed) {
+            return (
+                <TooltipProvider delayDuration={0}>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            {content}
+                        </TooltipTrigger>
+                        <TooltipContent side="right" className="bg-slate-800 border-slate-700 text-white">
+                            {item.label}
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+            )
+        }
+
+        return content
+    }
 
     return (
-        <aside className="fixed left-0 top-0 h-full w-64 bg-slate-900 border-r border-slate-800 z-40 flex flex-col">
-            {/* Logo */}
-            <div className="flex items-center gap-3 px-6 py-5 border-b border-slate-800">
-                <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-green-600">
-                    <span className="text-lg">🏏</span>
-                </div>
-                <div>
-                    <h1 className="text-white font-bold text-lg leading-none">CRIC-V</h1>
-                    <p className="text-slate-500 text-xs mt-0.5">Coaching Assistant</p>
-                </div>
-            </div>
+        <>
+            {/* Mobile Backdrop */}
+            {isMobileOpen && (
+                <div 
+                    className="fixed inset-0 bg-black/50 z-40 lg:hidden transition-opacity duration-300"
+                    onClick={closeMobile}
+                />
+            )}
 
-            {/* Nav */}
-            <nav className="flex-1 px-3 py-4 space-y-1">
-                {navItems.map((item) => {
-                    const Icon = item.icon
-                    const isActive = pathname === item.href ||
-                        (item.href !== '/dashboard' && pathname.startsWith(item.href))
-                    return (
-                        <Link
-                            key={item.href + item.label}
-                            href={item.href}
-                            className={cn(
-                                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors group',
-                                isActive
-                                    ? 'bg-green-600/20 text-green-400 border border-green-600/30'
-                                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
-                            )}
-                        >
-                            <Icon className="h-4 w-4 shrink-0" />
-                            <span className="flex-1">{item.label}</span>
-                            {isActive && (
-                                <ChevronRight className="h-3 w-3 text-green-400" />
-                            )}
-                        </Link>
-                    )
-                })}
-
-                {isAdmin && (
-                    <>
-                        <div className="pt-4 pb-2 px-3">
-                            <p className="text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                                Administration
-                            </p>
-                        </div>
-                        {adminItems.map((item) => {
-                            const Icon = item.icon
-                            const isActive = pathname === item.href
-                            return (
-                                <Link
-                                    key={item.href}
-                                    href={item.href}
-                                    className={cn(
-                                        'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
-                                        isActive
-                                            ? 'bg-amber-600/20 text-amber-400 border border-amber-600/30'
-                                            : 'text-slate-400 hover:text-white hover:bg-slate-800'
-                                    )}
-                                >
-                                    <Icon className="h-4 w-4 shrink-0" />
-                                    <span>{item.label}</span>
-                                </Link>
-                            )
-                        })}
-                    </>
+            {/* Sidebar Container */}
+            <aside 
+                className={cn(
+                    "fixed left-0 top-0 h-full bg-[#1e293b] border-r border-slate-800 z-50 flex flex-col transition-all duration-200 ease-in-out",
+                    // Desktop width
+                    isCollapsed ? "w-16" : "w-[280px]",
+                    // Mobile behavior
+                    "max-lg:w-[280px] max-lg:fixed",
+                    isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
                 )}
-            </nav>
+            >
+                {/* Header / Logo */}
+                <div className={cn(
+                    "flex items-center h-16 px-4 border-b border-slate-800",
+                    isCollapsed ? "justify-center" : "justify-between"
+                )}>
+                    <div className="flex items-center gap-3 overflow-hidden">
+                        <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-green-600 shrink-0">
+                            <span className="text-lg">🏏</span>
+                        </div>
+                        {!isCollapsed && (
+                            <div className="transition-opacity duration-200">
+                                <h1 className="text-white font-bold text-lg leading-none">CRIC-V</h1>
+                                <p className="text-slate-500 text-[10px] mt-0.5 uppercase tracking-wider">Coaching Assistant</p>
+                            </div>
+                        )}
+                    </div>
 
-            {/* User info at bottom */}
-            <div className="px-3 py-4 border-t border-slate-800">
-                <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-800">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-green-600/30 text-green-400 text-sm font-bold">
-                        {user?.username?.charAt(0)?.toUpperCase() || 'U'}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                        <p className="text-white text-sm font-medium truncate">
-                            {user?.username || 'User'}
-                        </p>
-                        <p className="text-slate-500 text-xs capitalize">{user?.role}</p>
-                    </div>
+                    {/* Desktop Toggle Button */}
+                    {!isCollapsed && (
+                        <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            onClick={toggle}
+                            className="hidden lg:flex h-8 w-8 text-slate-400 hover:text-white hover:bg-slate-800"
+                        >
+                            <ChevronLeft className="h-4 w-4" />
+                        </Button>
+                    )}
+                    {isCollapsed && (
+                         <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            onClick={toggle}
+                            className="hidden lg:flex absolute -right-4 top-4 h-8 w-8 rounded-full bg-slate-800 border border-slate-700 text-slate-400 hover:text-white"
+                         >
+                            <ChevronRight className="h-4 w-4" />
+                         </Button>
+                    )}
+
+                    {/* Mobile Close Button */}
+                    <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        onClick={closeMobile}
+                        className="lg:hidden h-8 w-8 text-slate-400 hover:text-white"
+                    >
+                        <X className="h-5 w-5" />
+                    </Button>
                 </div>
-            </div>
-        </aside>
+
+                {/* Navigation */}
+                <nav className="flex-1 overflow-y-auto py-4 px-2 space-y-1">
+                    {navItems.map((item) => (
+                        <NavItem key={item.href} item={item} />
+                    ))}
+                </nav>
+
+                {/* Bottom User Section */}
+                <div className="p-2 border-t border-slate-800">
+                    <Link
+                        href="/profile"
+                        onClick={() => { if (isMobileOpen) closeMobile() }}
+                        className={cn(
+                            "flex items-center gap-3 p-2 rounded-lg transition-colors hover:bg-slate-800 group",
+                            isCollapsed ? "justify-center" : ""
+                        )}
+                    >
+                        <UserAvatar user={user} size={isCollapsed ? "sm" : "md"} className="shrink-0" />
+                        {!isCollapsed && (
+                            <div className="flex-1 min-w-0 overflow-hidden text-left">
+                                <p className="text-sm font-medium text-white truncate">{user?.username || 'User'}</p>
+                                <p className="text-xs text-slate-500 capitalize truncate">{user?.role}</p>
+                            </div>
+                        )}
+                    </Link>
+                </div>
+            </aside>
+        </>
     )
 }
