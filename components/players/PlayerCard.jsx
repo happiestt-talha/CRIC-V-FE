@@ -6,7 +6,7 @@ import { User, ArrowRight } from 'lucide-react'
 
 export default function PlayerCard({ player }) {
     return (
-        <Card className="bg-slate-900 border-slate-800 hover:border-slate-700 transition-colors">
+        <Card className="bg-slate-600/50 border-2 border-slate-800 hover:border-green-700 transition-colors">
             <CardContent className="p-5">
                 <div className="flex items-start gap-4">
                     <div className="flex items-center justify-center w-12 h-12 rounded-full bg-green-600/20 text-green-400 text-xl font-bold shrink-0">

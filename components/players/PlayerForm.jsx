@@ -103,7 +103,7 @@ export default function PlayerForm() {
                                 required
                                 className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
                             />
-                            <p className="text-[10px] text-slate-500 italic">
+                            <p className="text-[12px] text-red-600/80 italic">
                                 A welcome email with credentials will be sent to this address.
                             </p>
                         </div>
@@ -225,8 +225,8 @@ export default function PlayerForm() {
                     </div>
 
                     <DialogFooter className="flex flex-col sm:flex-row gap-2">
-                        <Button 
-                            variant="outline" 
+                        <Button
+                            variant="outline"
                             className="flex-1 border-slate-700 text-slate-300 hover:bg-slate-800"
                             onClick={copyToClipboard}
                         >
@@ -236,7 +236,7 @@ export default function PlayerForm() {
                                 <><Copy className="mr-2 h-4 w-4" /> Copy Credentials</>
                             )}
                         </Button>
-                        <Button 
+                        <Button
                             className="flex-1 bg-green-600 hover:bg-green-700 text-white"
                             onClick={handleCloseModal}
                         >

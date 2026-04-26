@@ -76,7 +76,13 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+[data-slot="select-trigger"] [data-placeholder] {
+  color: rgb(148 163 184) !important;
+  /* slate-400 */
 }
