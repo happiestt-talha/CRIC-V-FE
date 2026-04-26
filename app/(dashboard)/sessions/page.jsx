@@ -19,7 +19,7 @@ import { useSessions } from '@/lib/hooks/useSessions'
 import { Plus, Search, Video } from 'lucide-react'
 
 export default function SessionsPage() {
-    const { sessions, loading, error } = useSessions()
+    const { sessions, loading, error, setSessions } = useSessions()
     const [search, setSearch] = useState('')
     const [typeFilter, setTypeFilter] = useState('all')
     const [statusFilter, setStatusFilter] = useState('all')
@@ -123,7 +123,16 @@ export default function SessionsPage() {
                 {!loading && !error && filtered.length > 0 && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                         {filtered.map((session) => (
-                            <SessionCard key={session.id} session={session} />
+                            <SessionCard 
+                                key={session.id} 
+                                session={session} 
+                                onDeleteSuccess={(id) => {
+                                    const updated = sessions.filter(s => s.id !== id)
+                                    // Note: we need to use setSessions from useSessions
+                                    // Since useSessions returns it, we can access it if we destructure it
+                                    setSessions(updated)
+                                }}
+                            />
                         ))}
                     </div>
                 )}

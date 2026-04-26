@@ -16,13 +16,20 @@ import { toast } from 'sonner'
 import { Trash2, Play, CheckCircle2, Clock, Loader2, Video as VideoIcon } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 
+import DeleteSessionDialog from '@/components/sessions/DeleteSessionDialog'
+import { useAuth } from '@/lib/hooks/useAuth'
+
 export default function SessionUploadPage() {
     const router = useRouter()
     const { id } = useParams()
+    const { user } = useAuth()
     const [loading, setLoading] = useState(true)
     const [session, setSession] = useState(null)
     const [videos, setVideos] = useState([])
     const [refreshing, setRefreshing] = useState(false)
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+
+    const isCoachOrAdmin = user?.role === 'coach' || user?.role === 'admin'
 
     const fetchData = useCallback(async () => {
         try {
@@ -80,6 +87,25 @@ export default function SessionUploadPage() {
                     title={`Session: ${session?.title || 'Untitled'}`}
                     description="Step 2: Upload Training Videos"
                     backHref="/sessions"
+                    action={
+                        isCoachOrAdmin && (
+                            <Button
+                                variant="outline"
+                                className="border-red-500/50 text-red-500 hover:bg-red-500/10 hover:text-red-400"
+                                onClick={() => setDeleteDialogOpen(true)}
+                            >
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                Abandon Session
+                            </Button>
+                        )
+                    }
+                />
+
+                <DeleteSessionDialog 
+                    sessionId={id}
+                    open={deleteDialogOpen}
+                    onOpenChange={setDeleteDialogOpen}
+                    onSuccess={() => router.push('/sessions')}
                 />
 
                 <SessionStepper currentStep={1} />

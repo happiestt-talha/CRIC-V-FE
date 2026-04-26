@@ -24,10 +24,14 @@ import Cookies from 'js-cookie'
 import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 
+import DeleteSessionDialog from '@/components/sessions/DeleteSessionDialog'
+import { useAuth } from '@/lib/hooks/useAuth'
+
 export default function SessionDetailPage({ params }) {
     const { id } = use(params)
     const sessionId = parseInt(id)
     const router = useRouter()
+    const { user } = useAuth()
 
     const { session, loading: sessionLoading } = useSession(sessionId)
     const { analysis, loading: analysisLoading, error: analysisError } = useSessionAnalysis(sessionId)
@@ -35,6 +39,9 @@ export default function SessionDetailPage({ params }) {
     const [feedbackLoading, setFeedbackLoading] = useState(true)
     const [videoUrl, setVideoUrl] = useState(null)
     const [reanalyzing, setReanalyzing] = useState(false)
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+
+    const isCoachOrAdmin = user?.role === 'coach' || user?.role === 'admin'
 
     useEffect(() => {
         analysisApi
@@ -102,7 +109,16 @@ export default function SessionDetailPage({ params }) {
                     backHref="/sessions"
                     backLabel="Sessions"
                     action={
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 items-center">
+                            {isCoachOrAdmin && (
+                                <Button
+                                    variant="outline"
+                                    className="border-red-500/50 text-red-500 hover:bg-red-500/10 hover:text-red-400"
+                                    onClick={() => setDeleteDialogOpen(true)}
+                                >
+                                    Delete Session
+                                </Button>
+                            )}
                             <Badge
                                 variant="outline"
                                 className="border-slate-700 text-slate-400 capitalize"
@@ -114,6 +130,13 @@ export default function SessionDetailPage({ params }) {
                             </Badge>
                         </div>
                     }
+                />
+
+                <DeleteSessionDialog 
+                    sessionId={sessionId}
+                    open={deleteDialogOpen}
+                    onOpenChange={setDeleteDialogOpen}
+                    onSuccess={() => router.push('/sessions')}
                 />
 
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
