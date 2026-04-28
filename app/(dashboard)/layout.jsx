@@ -10,7 +10,7 @@ export default function DashboardLayout({ children }) {
 
     return (
         <ProtectedRoute>
-            <div className="flex min-h-screen bg-[#0f172a] text-slate-50">
+            <div className="flex min-h-screen bg-slate-100 dark:bg-[#0f172a] text-slate-900 dark:text-slate-50">
                 <Sidebar />
                 <main 
                     className={cn(

@@ -11,7 +11,7 @@ const BowlingAnalysis = ({ analysis, deliveries, onDeliveryClick, selectedDelive
   
   if (!metrics) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 text-slate-500">
+      <div className="flex flex-col items-center justify-center py-20 text-slate-500 dark:text-slate-500">
         <Activity className="w-12 h-12 mb-4 opacity-20" />
         <p>No bowling analysis data available for this session.</p>
       </div>
@@ -37,7 +37,7 @@ const BowlingAnalysis = ({ analysis, deliveries, onDeliveryClick, selectedDelive
         "p-4 rounded-xl border flex items-start gap-4 shadow-lg",
         icc_compliant === true ? "bg-green-500/10 border-green-500/50 text-green-500" :
         icc_compliant === false ? "bg-red-500/10 border-red-500/50 text-red-500" :
-        "bg-slate-500/10 border-slate-500/50 text-slate-500"
+        "bg-slate-500/10 border-slate-500/50 text-slate-500 dark:text-slate-500"
       )}>
         <div className="p-2 rounded-full bg-current/10">
           {icc_compliant === true ? <CheckCircle2 className="w-6 h-6" /> :
@@ -109,16 +109,16 @@ const BowlingAnalysis = ({ analysis, deliveries, onDeliveryClick, selectedDelive
           COACH RECOMMENDATIONS
         </h3>
         {(!Array.isArray(recommendations) || recommendations.length === 0) ? (
-          <p className="text-slate-500 italic text-sm">No specific recommendations — good form detected.</p>
+          <p className="text-slate-500 dark:text-slate-500 italic text-sm">No specific recommendations — good form detected.</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {recommendations.map((rec, i) => (
-              <Card key={i} className="bg-slate-800/20 border-slate-700/50 hover:bg-slate-800/40 transition-colors">
+              <Card key={i} className="bg-slate-50 dark:bg-slate-800/20 border-slate-200 dark:border-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-800/40 transition-colors shadow-sm">
                 <CardContent className="p-4 flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-yellow-500/10 flex items-center justify-center shrink-0">
                     <Lightbulb className="w-4 h-4 text-yellow-500" />
                   </div>
-                  <p className="text-sm font-medium text-slate-300">{rec}</p>
+                  <p className="text-sm font-medium text-slate-500 dark:text-slate-600 dark:text-slate-300">{rec}</p>
                 </CardContent>
               </Card>
             ))}
@@ -132,14 +132,14 @@ const BowlingAnalysis = ({ analysis, deliveries, onDeliveryClick, selectedDelive
           <h3 className="text-xl font-black flex items-center gap-2">
             <Activity className="w-5 h-5 text-green-500" />
             DELIVERIES
-            <Badge variant="secondary" className="ml-2 bg-slate-800 text-slate-400 font-black">
+            <Badge variant="secondary" className="ml-2 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-500 dark:text-slate-400 font-black">
               {deliveries?.length || 0}
             </Badge>
           </h3>
         </div>
         
         {(!Array.isArray(deliveries) || deliveries.length === 0) ? (
-          <div className="p-10 border-2 border-dashed border-slate-800 rounded-xl text-center text-slate-500 italic text-sm">
+          <div className="p-10 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl text-center text-slate-500 dark:text-slate-500 italic text-sm">
             No delivery-level data available for this session.
           </div>
         ) : (
@@ -160,8 +160,8 @@ const BowlingAnalysis = ({ analysis, deliveries, onDeliveryClick, selectedDelive
       {/* Pitch Location Chart */}
       {deliveries?.length > 0 && (
         <div className="space-y-4">
-           <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest">Pitch Location Map</h3>
-           <Card className="bg-slate-900 border-slate-800 p-8 flex justify-center">
+           <h3 className="text-sm font-bold text-slate-500 dark:text-slate-500 uppercase tracking-widest">Pitch Location Map</h3>
+           <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 p-8 flex justify-center">
              <div className="relative w-48 h-80 bg-green-900/10 rounded border-2 border-green-800/30 overflow-hidden">
                 {/* Wickets */}
                 <div className="absolute top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-slate-700/50 rounded-full" />

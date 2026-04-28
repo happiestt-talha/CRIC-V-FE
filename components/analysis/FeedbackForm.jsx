@@ -66,14 +66,14 @@ export default function FeedbackForm({ sessionId, existingFeedback = [], onSucce
             {existingFeedback.length > 0 && (
                 <div className="space-y-3">
                     {existingFeedback.map((fb) => (
-                        <Card key={fb.id} className="bg-slate-800 border-slate-700">
+                        <Card key={fb.id} className="bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700">
                             <CardContent className="p-4">
                                 <div className="flex items-start justify-between mb-2">
                                     <div>
-                                        <p className="text-white text-sm font-medium">
+                                        <p className="text-slate-900 dark:text-white text-sm font-medium">
                                             {fb.coach_name || 'Coach'}
                                         </p>
-                                        <p className="text-slate-500 text-xs">
+                                        <p className="text-slate-500 dark:text-slate-500 text-xs">
                                             {formatDateTime(fb.created_at)}
                                         </p>
                                     </div>
@@ -81,15 +81,15 @@ export default function FeedbackForm({ sessionId, existingFeedback = [], onSucce
                                         {[1, 2, 3, 4, 5].map((s) => (
                                             <Star
                                                 key={s}
-                                                className={`h-3.5 w-3.5 ${s <= fb.rating ? 'text-amber-400 fill-amber-400' : 'text-slate-600'}`}
+                                                className={`h-3.5 w-3.5 ${s <= fb.rating ? 'text-amber-400 fill-amber-400' : 'text-slate-500 dark:text-slate-600'}`}
                                             />
                                         ))}
                                     </div>
                                 </div>
-                                <p className="text-slate-300 text-sm">{fb.comments}</p>
+                                <p className="text-slate-500 dark:text-slate-600 dark:text-slate-300 text-sm">{fb.comments}</p>
                                 {fb.drill_recommendations?.length > 0 && (
                                     <div className="mt-3">
-                                        <p className="text-slate-500 text-xs mb-1.5">Recommended drills:</p>
+                                        <p className="text-slate-500 dark:text-slate-500 text-xs mb-1.5">Recommended drills:</p>
                                         <div className="flex flex-wrap gap-1.5">
                                             {fb.drill_recommendations.map((d, i) => (
                                                 <Badge
@@ -111,14 +111,14 @@ export default function FeedbackForm({ sessionId, existingFeedback = [], onSucce
 
             {existingFeedback.length === 0 && !showForm && (
                 <div className="text-center py-6">
-                    <p className="text-slate-400 text-sm">No feedback yet for this session</p>
+                    <p className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-sm">No feedback yet for this session</p>
                 </div>
             )}
 
             {/* Add feedback button */}
             {isCoach && !showForm && (
                 <Button
-                    className="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white"
+                    className="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
                     onClick={() => setShowForm(true)}
                 >
                     <Plus className="h-4 w-4 mr-2" />
@@ -128,14 +128,14 @@ export default function FeedbackForm({ sessionId, existingFeedback = [], onSucce
 
             {/* Feedback form */}
             {showForm && (
-                <Card className="bg-slate-800 border-slate-700">
+                <Card className="bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700">
                     <CardHeader className="pb-3">
-                        <CardTitle className="text-white text-sm">Add Your Feedback</CardTitle>
+                        <CardTitle className="text-slate-900 dark:text-white text-sm">Add Your Feedback</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         {/* Star rating */}
                         <div>
-                            <Label className="text-slate-300 text-sm mb-2 block">
+                            <Label className="text-slate-500 dark:text-slate-600 dark:text-slate-300 text-sm mb-2 block">
                                 Session Rating
                             </Label>
                             <div className="flex gap-1">
@@ -150,7 +150,7 @@ export default function FeedbackForm({ sessionId, existingFeedback = [], onSucce
                                         <Star
                                             className={`h-6 w-6 transition-colors ${s <= (hoverRating || rating)
                                                     ? 'text-amber-400 fill-amber-400'
-                                                    : 'text-slate-600'
+                                                    : 'text-slate-500 dark:text-slate-600'
                                                 }`}
                                         />
                                     </button>
@@ -160,21 +160,21 @@ export default function FeedbackForm({ sessionId, existingFeedback = [], onSucce
 
                         {/* Comments */}
                         <div>
-                            <Label className="text-slate-300 text-sm mb-2 block">
+                            <Label className="text-slate-500 dark:text-slate-600 dark:text-slate-300 text-sm mb-2 block">
                                 Comments *
                             </Label>
                             <Textarea
                                 value={comments}
                                 onChange={(e) => setComments(e.target.value)}
                                 placeholder="Describe player's performance, areas to improve..."
-                                className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-500 resize-none"
+                                className="bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500 resize-none"
                                 rows={4}
                             />
                         </div>
 
                         {/* Drills */}
                         <div>
-                            <Label className="text-slate-300 text-sm mb-2 block">
+                            <Label className="text-slate-500 dark:text-slate-600 dark:text-slate-300 text-sm mb-2 block">
                                 Recommended Drills
                             </Label>
                             <div className="flex gap-2 mb-2">
@@ -183,13 +183,13 @@ export default function FeedbackForm({ sessionId, existingFeedback = [], onSucce
                                     onChange={(e) => setDrillInput(e.target.value)}
                                     onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addDrill())}
                                     placeholder="Add a drill..."
-                                    className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-500"
+                                    className="bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500"
                                 />
                                 <Button
                                     type="button"
                                     onClick={addDrill}
                                     size="sm"
-                                    className="bg-green-600 hover:bg-green-700 text-white shrink-0"
+                                    className="bg-green-600 hover:bg-green-700 text-slate-900 dark:text-white shrink-0"
                                 >
                                     Add
                                 </Button>
@@ -215,14 +215,14 @@ export default function FeedbackForm({ sessionId, existingFeedback = [], onSucce
                         <div className="flex gap-2 pt-1">
                             <Button
                                 variant="outline"
-                                className="flex-1 border-slate-700 text-slate-300 hover:bg-slate-900"
+                                className="flex-1 border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-600 dark:text-slate-300 hover:bg-white dark:bg-slate-900"
                                 onClick={() => setShowForm(false)}
                                 disabled={loading}
                             >
                                 Cancel
                             </Button>
                             <Button
-                                className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                                className="flex-1 bg-green-600 hover:bg-green-700 text-slate-900 dark:text-white"
                                 onClick={handleSubmit}
                                 disabled={loading}
                             >

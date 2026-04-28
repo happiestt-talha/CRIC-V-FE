@@ -17,7 +17,7 @@ export default function PageHeader({
                         <Button
                             variant="ghost"
                             size="sm"
-                            className="text-slate-400 hover:text-white hover:bg-slate-800 mt-0.5"
+                            className="text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 mt-0.5"
                         >
                             <ArrowLeft className="h-4 w-4 mr-1" />
                             {backLabel}
@@ -25,9 +25,9 @@ export default function PageHeader({
                     </Link>
                 )}
                 <div>
-                    <h1 className="text-2xl font-bold text-white">{title}</h1>
+                    <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{title}</h1>
                     {description && (
-                        <p className="text-slate-400 mt-1 text-sm">{description}</p>
+                        <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm">{description}</p>
                     )}
                 </div>
             </div>

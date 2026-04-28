@@ -136,13 +136,13 @@ export default function ProfilePage() {
     }
 
     return (
-        <div className="flex flex-col min-h-screen bg-[#0f172a]">
+        <div className="flex flex-col min-h-screen bg-slate-100 dark:bg-[#0f172a]">
             <Navbar title="User Profile" />
             
             <div className="flex-1 p-4 lg:p-8 max-w-4xl mx-auto w-full space-y-8 pb-12">
                 
                 {/* Section 1: Avatar Card */}
-                <Card className="bg-[#1e293b] border-slate-800">
+                <Card className="bg-white dark:bg-[#1e293b] border-slate-200 dark:border-slate-800">
                     <CardContent className="pt-10 pb-8 flex flex-col items-center">
                         <div className="relative group">
                             <div className="h-24 w-24 rounded-full overflow-hidden border-2 border-green-500/50">
@@ -154,7 +154,7 @@ export default function ProfilePage() {
                             </div>
                             <button 
                                 onClick={() => fileInputRef.current?.click()}
-                                className="absolute bottom-0 right-0 p-1.5 bg-green-600 rounded-full text-white hover:bg-green-500 transition-colors shadow-lg"
+                                className="absolute bottom-0 right-0 p-1.5 bg-green-600 rounded-full text-slate-900 dark:text-white hover:bg-green-500 transition-colors shadow-lg"
                             >
                                 <Camera className="h-4 w-4" />
                             </button>
@@ -168,7 +168,7 @@ export default function ProfilePage() {
                         </div>
                         
                         <div className="mt-4 text-center">
-                            <h3 className="text-xl font-bold text-white">{user?.username}</h3>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white">{user?.username}</h3>
                             <Badge variant="outline" className="mt-1 bg-green-500/10 text-green-500 border-green-500/20 capitalize">
                                 {user?.role}
                             </Badge>
@@ -188,7 +188,7 @@ export default function ProfilePage() {
                                 <Button 
                                     size="sm" 
                                     variant="outline" 
-                                    className="border-slate-700 text-slate-300"
+                                    className="border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-600 dark:text-slate-300"
                                     onClick={() => {
                                         setAvatarPreview(null)
                                         setAvatarFile(null)
@@ -204,16 +204,16 @@ export default function ProfilePage() {
                 </Card>
 
                 {/* Section 2: Profile Information */}
-                <Card className="bg-[#1e293b] border-slate-800 overflow-hidden">
-                    <CardHeader className="flex flex-row items-center justify-between border-b border-slate-800">
+                <Card className="bg-white dark:bg-[#1e293b] border-slate-200 dark:border-slate-800 overflow-hidden">
+                    <CardHeader className="flex flex-row items-center justify-between border-b border-slate-200 dark:border-slate-800">
                         <div>
-                            <CardTitle className="text-lg text-white">Profile Information</CardTitle>
-                            <CardDescription className="text-slate-400">Update your account details</CardDescription>
+                            <CardTitle className="text-lg text-slate-900 dark:text-white">Profile Information</CardTitle>
+                            <CardDescription className="text-slate-500 dark:text-slate-500 dark:text-slate-400">Update your account details</CardDescription>
                         </div>
                         <Button 
                             variant="ghost" 
                             size="sm" 
-                            className="text-slate-400 hover:text-white"
+                            className="text-slate-500 dark:text-slate-500 dark:text-slate-400 hover:text-white"
                             onClick={() => setIsEditing(!isEditing)}
                         >
                             {isEditing ? <X className="h-4 w-4 mr-2" /> : <Edit2 className="h-4 w-4 mr-2" />}
@@ -224,26 +224,26 @@ export default function ProfilePage() {
                         <form onSubmit={handleProfileSubmit} className="space-y-4">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <Label className="text-slate-300">Username</Label>
+                                    <Label className="text-slate-500 dark:text-slate-600 dark:text-slate-300">Username</Label>
                                     {isEditing ? (
                                         <Input 
                                             value={profileForm.username} 
                                             onChange={e => setProfileForm({...profileForm, username: e.target.value})}
-                                            className="bg-slate-900 border-slate-700 text-white"
+                                            className="bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
                                         />
                                     ) : (
-                                        <p className="p-2 bg-slate-900/50 rounded border border-slate-800 text-white">{user?.username}</p>
+                                        <p className="p-2 bg-white dark:bg-slate-900/50 rounded border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white">{user?.username}</p>
                                     )}
                                 </div>
                                 <div className="space-y-2">
-                                    <Label className="text-slate-300">Email Address</Label>
+                                    <Label className="text-slate-500 dark:text-slate-600 dark:text-slate-300">Email Address</Label>
                                     {isEditing ? (
                                         <div className="space-y-2">
                                             <Input 
                                                 type="email"
                                                 value={profileForm.email} 
                                                 onChange={e => setProfileForm({...profileForm, email: e.target.value})}
-                                                className="bg-slate-900 border-slate-700 text-white"
+                                                className="bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
                                             />
                                             {profileForm.email !== user?.email && (
                                                 <div className="text-[10px] text-amber-400 bg-amber-400/10 p-2 rounded border border-amber-400/20">
@@ -252,20 +252,20 @@ export default function ProfilePage() {
                                             )}
                                         </div>
                                     ) : (
-                                        <p className="p-2 bg-slate-900/50 rounded border border-slate-800 text-white">{user?.email}</p>
+                                        <p className="p-2 bg-white dark:bg-slate-900/50 rounded border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white">{user?.email}</p>
                                     )}
                                 </div>
                                 {user?.role === 'player' && (
                                     <div className="space-y-2 md:col-span-2">
-                                        <Label className="text-slate-300">Full Name</Label>
+                                        <Label className="text-slate-500 dark:text-slate-600 dark:text-slate-300">Full Name</Label>
                                         {isEditing ? (
                                             <Input 
                                                 value={profileForm.full_name} 
                                                 onChange={e => setProfileForm({...profileForm, full_name: e.target.value})}
-                                                className="bg-slate-900 border-slate-700 text-white"
+                                                className="bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
                                             />
                                         ) : (
-                                            <p className="p-2 bg-slate-900/50 rounded border border-slate-800 text-white">{user?.full_name || 'Not set'}</p>
+                                            <p className="p-2 bg-white dark:bg-slate-900/50 rounded border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white">{user?.full_name || 'Not set'}</p>
                                         )}
                                     </div>
                                 )}
@@ -288,26 +288,26 @@ export default function ProfilePage() {
                 </Card>
 
                 {/* Section 3: Change Password */}
-                <Card className="bg-[#1e293b] border-slate-800">
-                    <CardHeader className="border-b border-slate-800">
-                        <CardTitle className="text-lg text-white">Security</CardTitle>
-                        <CardDescription className="text-slate-400">Change your password</CardDescription>
+                <Card className="bg-white dark:bg-[#1e293b] border-slate-200 dark:border-slate-800">
+                    <CardHeader className="border-b border-slate-200 dark:border-slate-800">
+                        <CardTitle className="text-lg text-slate-900 dark:text-white">Security</CardTitle>
+                        <CardDescription className="text-slate-500 dark:text-slate-500 dark:text-slate-400">Change your password</CardDescription>
                     </CardHeader>
                     <CardContent className="pt-6">
                         <form onSubmit={handleChangePassword} className="space-y-4">
                             <div className="space-y-2">
-                                <Label className="text-slate-300">Current Password</Label>
+                                <Label className="text-slate-500 dark:text-slate-600 dark:text-slate-300">Current Password</Label>
                                 <div className="relative">
                                     <Input 
                                         type={showPasswords.current ? "text" : "password"} 
                                         value={passwords.current}
                                         onChange={e => setPasswords({...passwords, current: e.target.value})}
-                                        className="bg-slate-900 border-slate-700 text-white pr-10"
+                                        className="bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white pr-10"
                                     />
                                     <button 
                                         type="button"
                                         onClick={() => setShowPasswords({...showPasswords, current: !showPasswords.current})}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-500"
                                     >
                                         {showPasswords.current ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                     </button>
@@ -316,36 +316,36 @@ export default function ProfilePage() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <Label className="text-slate-300">New Password</Label>
+                                    <Label className="text-slate-500 dark:text-slate-600 dark:text-slate-300">New Password</Label>
                                     <div className="relative">
                                         <Input 
                                             type={showPasswords.new ? "text" : "password"} 
                                             value={passwords.new}
                                             onChange={e => setPasswords({...passwords, new: e.target.value})}
-                                            className="bg-slate-900 border-slate-700 text-white pr-10"
+                                            className="bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white pr-10"
                                         />
                                         <button 
                                             type="button"
                                             onClick={() => setShowPasswords({...showPasswords, new: !showPasswords.new})}
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-500"
                                         >
                                             {showPasswords.new ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                         </button>
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label className="text-slate-300">Confirm New Password</Label>
+                                    <Label className="text-slate-500 dark:text-slate-600 dark:text-slate-300">Confirm New Password</Label>
                                     <div className="relative">
                                         <Input 
                                             type={showPasswords.confirm ? "text" : "password"} 
                                             value={passwords.confirm}
                                             onChange={e => setPasswords({...passwords, confirm: e.target.value})}
-                                            className="bg-slate-900 border-slate-700 text-white pr-10"
+                                            className="bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white pr-10"
                                         />
                                         <button 
                                             type="button"
                                             onClick={() => setShowPasswords({...showPasswords, confirm: !showPasswords.confirm})}
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-500"
                                         >
                                             {showPasswords.confirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                         </button>
@@ -354,22 +354,22 @@ export default function ProfilePage() {
                             </div>
 
                             {/* Requirements Checklist */}
-                            <div className="p-3 bg-slate-900/50 rounded-lg border border-slate-800 space-y-2">
+                            <div className="p-3 bg-white dark:bg-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-800 space-y-2">
                                 <div className="flex items-center gap-2 text-xs">
                                     {passwordRequirements.length ? <Check className="h-3 w-3 text-green-500" /> : <div className="h-3 w-3 rounded-full border border-slate-600" />}
-                                    <span className={passwordRequirements.length ? "text-green-500" : "text-slate-500"}>At least 8 characters</span>
+                                    <span className={passwordRequirements.length ? "text-green-500" : "text-slate-500 dark:text-slate-500"}>At least 8 characters</span>
                                 </div>
                                 <div className="flex items-center gap-2 text-xs">
                                     {passwordRequirements.number ? <Check className="h-3 w-3 text-green-500" /> : <div className="h-3 w-3 rounded-full border border-slate-600" />}
-                                    <span className={passwordRequirements.number ? "text-green-500" : "text-slate-500"}>Contains a number</span>
+                                    <span className={passwordRequirements.number ? "text-green-500" : "text-slate-500 dark:text-slate-500"}>Contains a number</span>
                                 </div>
                                 <div className="flex items-center gap-2 text-xs">
                                     {passwordRequirements.letter ? <Check className="h-3 w-3 text-green-500" /> : <div className="h-3 w-3 rounded-full border border-slate-600" />}
-                                    <span className={passwordRequirements.letter ? "text-green-500" : "text-slate-500"}>Contains a letter</span>
+                                    <span className={passwordRequirements.letter ? "text-green-500" : "text-slate-500 dark:text-slate-500"}>Contains a letter</span>
                                 </div>
                                 <div className="flex items-center gap-2 text-xs">
                                     {passwordRequirements.match ? <Check className="h-3 w-3 text-green-500" /> : <div className="h-3 w-3 rounded-full border border-slate-600" />}
-                                    <span className={passwordRequirements.match ? "text-green-500" : "text-slate-500"}>Passwords match</span>
+                                    <span className={passwordRequirements.match ? "text-green-500" : "text-slate-500 dark:text-slate-500"}>Passwords match</span>
                                 </div>
                             </div>
 
@@ -388,38 +388,38 @@ export default function ProfilePage() {
                 </Card>
 
                 {/* Section 4: Account Information */}
-                <Card className="bg-[#1e293b] border-slate-800">
-                    <CardHeader className="border-b border-slate-800">
-                        <CardTitle className="text-lg text-white">Account Details</CardTitle>
+                <Card className="bg-white dark:bg-[#1e293b] border-slate-200 dark:border-slate-800">
+                    <CardHeader className="border-b border-slate-200 dark:border-slate-800">
+                        <CardTitle className="text-lg text-slate-900 dark:text-white">Account Details</CardTitle>
                     </CardHeader>
                     <CardContent className="pt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="flex items-start gap-3">
-                            <Fingerprint className="h-5 w-5 text-slate-500 mt-0.5" />
+                            <Fingerprint className="h-5 w-5 text-slate-500 dark:text-slate-500 mt-0.5" />
                             <div>
-                                <p className="text-xs text-slate-500 uppercase tracking-wider">Account ID</p>
-                                <p className="text-sm text-white font-mono">{user?.id}</p>
+                                <p className="text-xs text-slate-500 dark:text-slate-500 uppercase tracking-wider">Account ID</p>
+                                <p className="text-sm text-slate-900 dark:text-white font-mono">{user?.id}</p>
                             </div>
                         </div>
                         <div className="flex items-start gap-3">
-                            <Shield className="h-5 w-5 text-slate-500 mt-0.5" />
+                            <Shield className="h-5 w-5 text-slate-500 dark:text-slate-500 mt-0.5" />
                             <div>
-                                <p className="text-xs text-slate-500 uppercase tracking-wider">Role</p>
-                                <p className="text-sm text-white capitalize">{user?.role}</p>
+                                <p className="text-xs text-slate-500 dark:text-slate-500 uppercase tracking-wider">Role</p>
+                                <p className="text-sm text-slate-900 dark:text-white capitalize">{user?.role}</p>
                             </div>
                         </div>
                         <div className="flex items-start gap-3">
-                            <Calendar className="h-5 w-5 text-slate-500 mt-0.5" />
+                            <Calendar className="h-5 w-5 text-slate-500 dark:text-slate-500 mt-0.5" />
                             <div>
-                                <p className="text-xs text-slate-500 uppercase tracking-wider">Member Since</p>
-                                <p className="text-sm text-white">
+                                <p className="text-xs text-slate-500 dark:text-slate-500 uppercase tracking-wider">Member Since</p>
+                                <p className="text-sm text-slate-900 dark:text-white">
                                     {user?.created_at ? new Date(user.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : '—'}
                                 </p>
                             </div>
                         </div>
                         <div className="flex items-start gap-3">
-                            <Activity className="h-5 w-5 text-slate-500 mt-0.5" />
+                            <Activity className="h-5 w-5 text-slate-500 dark:text-slate-500 mt-0.5" />
                             <div>
-                                <p className="text-xs text-slate-500 uppercase tracking-wider">Status</p>
+                                <p className="text-xs text-slate-500 dark:text-slate-500 uppercase tracking-wider">Status</p>
                                 <div className="mt-1">
                                     {user?.email_verified ? (
                                         <Badge className="bg-green-500/10 text-green-500 border-green-500/20">Verified</Badge>

@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useAuth } from '@/lib/hooks/useAuth'
@@ -36,7 +37,11 @@ const navItems = [
 export default function Sidebar() {
     const pathname = usePathname()
     const { user } = useAuth()
-    const { isCollapsed, isMobileOpen, toggle, closeMobile } = useSidebar()
+    const { isCollapsed, isMobileOpen, closeMobile } = useSidebar()
+    const [isHovered, setIsHovered] = useState(false)
+
+    // Sidebar is visually collapsed only if pinned AND not hovered
+    const effectiveCollapsed = isCollapsed && !isHovered
 
     const NavItem = ({ item }) => {
         const Icon = item.icon
@@ -49,16 +54,16 @@ export default function Sidebar() {
                 className={cn(
                     'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group relative',
                     isActive
-                        ? 'bg-green-500/10 text-green-500 border-l-2 border-green-500 rounded-l-none'
-                        : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                        ? 'bg-green-500/10 text-green-600 dark:text-green-500 border-l-2 border-green-500 rounded-l-none'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
                 )}
             >
                 <Icon className={cn("h-5 w-5 shrink-0", isActive && "text-green-500")} />
-                {!isCollapsed && <span className="flex-1 truncate">{item.label}</span>}
+                {!effectiveCollapsed && <span className="flex-1 truncate">{item.label}</span>}
             </Link>
         )
 
-        if (isCollapsed) {
+        if (effectiveCollapsed) {
             return (
                 <TooltipProvider delayDuration={0}>
                     <Tooltip>
@@ -88,10 +93,12 @@ export default function Sidebar() {
 
             {/* Sidebar Container */}
             <aside 
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
                 className={cn(
-                    "fixed left-0 top-0 h-full bg-[#1e293b] border-r border-slate-800 z-50 flex flex-col transition-all duration-200 ease-in-out",
+                    "fixed left-0 top-0 h-full bg-white dark:bg-[#0f172a] border-r border-slate-200 dark:border-slate-800 z-50 flex flex-col transition-all duration-300 ease-in-out",
                     // Desktop width
-                    isCollapsed ? "w-16" : "w-[280px]",
+                    effectiveCollapsed ? "w-16" : "w-[280px] shadow-2xl",
                     // Mobile behavior
                     "max-lg:w-[280px] max-lg:fixed",
                     isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
@@ -99,49 +106,27 @@ export default function Sidebar() {
             >
                 {/* Header / Logo */}
                 <div className={cn(
-                    "flex items-center h-16 px-4 border-b border-slate-800",
-                    isCollapsed ? "justify-center" : "justify-between"
+                    "flex items-center h-16 px-4 border-b border-slate-200 dark:border-slate-800",
+                    effectiveCollapsed ? "justify-center" : "justify-between"
                 )}>
                     <div className="flex items-center gap-3 overflow-hidden">
                         <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-green-600 shrink-0">
                             <span className="text-lg">🏏</span>
                         </div>
-                        {!isCollapsed && (
+                        {!effectiveCollapsed && (
                             <div className="transition-opacity duration-200">
-                                <h1 className="text-white font-bold text-lg leading-none">CRIC-V</h1>
-                                <p className="text-slate-500 text-[10px] mt-0.5 uppercase tracking-wider">Coaching Assistant</p>
+                                <h1 className="text-slate-900 dark:text-white font-bold text-lg leading-none">CRIC-V</h1>
+                                <p className="text-slate-500 dark:text-slate-500 text-[10px] mt-0.5 uppercase tracking-wider">Coaching Assistant</p>
                             </div>
                         )}
                     </div>
-
-                    {/* Desktop Toggle Button */}
-                    {!isCollapsed && (
-                        <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            onClick={toggle}
-                            className="hidden lg:flex h-8 w-8 text-slate-400 hover:text-white hover:bg-slate-800"
-                        >
-                            <ChevronLeft className="h-4 w-4" />
-                        </Button>
-                    )}
-                    {isCollapsed && (
-                         <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            onClick={toggle}
-                            className="hidden lg:flex absolute -right-4 top-4 h-8 w-8 rounded-full bg-slate-800 border border-slate-700 text-slate-400 hover:text-white"
-                         >
-                            <ChevronRight className="h-4 w-4" />
-                         </Button>
-                    )}
 
                     {/* Mobile Close Button */}
                     <Button 
                         variant="ghost" 
                         size="icon" 
                         onClick={closeMobile}
-                        className="lg:hidden h-8 w-8 text-slate-400 hover:text-white"
+                        className="lg:hidden h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                     >
                         <X className="h-5 w-5" />
                     </Button>
@@ -155,20 +140,20 @@ export default function Sidebar() {
                 </nav>
 
                 {/* Bottom User Section */}
-                <div className="p-2 border-t border-slate-800">
+                <div className="p-2 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
                     <Link
                         href="/profile"
                         onClick={() => { if (isMobileOpen) closeMobile() }}
                         className={cn(
-                            "flex items-center gap-3 p-2 rounded-lg transition-colors hover:bg-slate-800 group",
-                            isCollapsed ? "justify-center" : ""
+                            "flex items-center gap-3 p-2 rounded-lg transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 group",
+                            effectiveCollapsed ? "justify-center" : ""
                         )}
                     >
-                        <UserAvatar user={user} size={isCollapsed ? "sm" : "md"} className="shrink-0" />
-                        {!isCollapsed && (
+                        <UserAvatar user={user} size={effectiveCollapsed ? "sm" : "md"} className="shrink-0" />
+                        {!effectiveCollapsed && (
                             <div className="flex-1 min-w-0 overflow-hidden text-left">
-                                <p className="text-sm font-medium text-white truncate">{user?.username || 'User'}</p>
-                                <p className="text-xs text-slate-500 capitalize truncate">{user?.role}</p>
+                                <p className="text-sm font-medium text-slate-800 dark:text-slate-200 truncate">{user?.username || 'User'}</p>
+                                <p className="text-xs text-slate-500 dark:text-slate-500 capitalize truncate">{user?.role}</p>
                             </div>
                         )}
                     </Link>

@@ -69,13 +69,13 @@ export default function AnalysisStatus({ taskId, onComplete }) {
     }
 
     return (
-        <div className="space-y-3 p-4 bg-slate-800 rounded-lg border border-slate-700">
+        <div className="space-y-3 p-4 bg-slate-100 dark:bg-slate-800 rounded-lg border border-slate-300 dark:border-slate-700">
             <div className="flex items-center gap-3">
                 {getIcon()}
-                <span className="text-white text-sm font-medium">{getLabel()}</span>
+                <span className="text-slate-900 dark:text-white text-sm font-medium">{getLabel()}</span>
                 <Badge
                     variant="outline"
-                    className="ml-auto text-xs border-slate-600 text-slate-400 capitalize"
+                    className="ml-auto text-xs border-slate-600 text-slate-500 dark:text-slate-500 dark:text-slate-400 capitalize"
                 >
                     {status}
                 </Badge>
@@ -85,7 +85,7 @@ export default function AnalysisStatus({ taskId, onComplete }) {
                     <Progress value={progress} className="h-1.5 bg-slate-700" />
                 )}
             {(status === 'success' || status === 'completed') && (
-                <p className="text-slate-400 text-xs">
+                <p className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-xs">
                     Your video has been analyzed. Refresh to see results.
                 </p>
             )}

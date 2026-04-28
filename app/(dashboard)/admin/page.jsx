@@ -121,14 +121,14 @@ export default function AdminPage() {
                             ].map((s) => {
                                 const Icon = s.icon
                                 return (
-                                    <Card key={s.label} className="bg-slate-900 border-slate-800">
+                                    <Card key={s.label} className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
                                         <CardContent className="p-5 flex items-center gap-4">
                                             <div className={`p-3 rounded-xl ${s.bg}`}>
                                                 <Icon className={`h-5 w-5 ${s.color}`} />
                                             </div>
                                             <div>
-                                                <p className="text-2xl font-bold text-white">{s.value ?? '—'}</p>
-                                                <p className="text-slate-400 text-xs">{s.label}</p>
+                                                <p className="text-2xl font-bold text-slate-900 dark:text-white">{s.value ?? '—'}</p>
+                                                <p className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-xs">{s.label}</p>
                                             </div>
                                         </CardContent>
                                     </Card>
@@ -138,34 +138,34 @@ export default function AdminPage() {
                     )}
 
                     {/* Users table */}
-                    <Card className="bg-slate-900 border-slate-800 mb-6">
+                    <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 mb-6">
                         <CardHeader>
-                            <CardTitle className="text-white text-base">All Users</CardTitle>
+                            <CardTitle className="text-slate-900 dark:text-white text-base">All Users</CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
                             <Table>
                                 <TableHeader>
-                                    <TableRow className="border-slate-800 hover:bg-transparent">
-                                        <TableHead className="text-slate-400">Username</TableHead>
-                                        <TableHead className="text-slate-400">Email</TableHead>
-                                        <TableHead className="text-slate-400">Role</TableHead>
-                                        <TableHead className="text-slate-400">Status</TableHead>
-                                        <TableHead className="text-slate-400">Joined</TableHead>
+                                    <TableRow className="border-slate-200 dark:border-slate-800 hover:bg-transparent">
+                                        <TableHead className="text-slate-500 dark:text-slate-500 dark:text-slate-400">Username</TableHead>
+                                        <TableHead className="text-slate-500 dark:text-slate-500 dark:text-slate-400">Email</TableHead>
+                                        <TableHead className="text-slate-500 dark:text-slate-500 dark:text-slate-400">Role</TableHead>
+                                        <TableHead className="text-slate-500 dark:text-slate-500 dark:text-slate-400">Status</TableHead>
+                                        <TableHead className="text-slate-500 dark:text-slate-500 dark:text-slate-400">Joined</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {users.map((user) => (
-                                        <TableRow key={user.id} className="border-slate-800 hover:bg-slate-800/50">
-                                            <TableCell className="text-white font-medium">
+                                        <TableRow key={user.id} className="border-slate-200 dark:border-slate-800 hover:bg-slate-100/50 dark:bg-slate-800/50">
+                                            <TableCell className="text-slate-900 dark:text-white font-medium">
                                                 {user.username}
                                             </TableCell>
-                                            <TableCell className="text-slate-400 text-sm">
+                                            <TableCell className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-sm">
                                                 {user.email}
                                             </TableCell>
                                             <TableCell>
                                                 <Badge
                                                     variant="outline"
-                                                    className="capitalize text-xs border-slate-700 text-slate-400"
+                                                    className="capitalize text-xs border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-500 dark:text-slate-400"
                                                 >
                                                     {user.role}
                                                 </Badge>
@@ -178,14 +178,14 @@ export default function AdminPage() {
                                                     {user.is_active ? 'Active' : 'Inactive'}
                                                 </Badge>
                                             </TableCell>
-                                            <TableCell className="text-slate-400 text-sm">
+                                            <TableCell className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-sm">
                                                 {formatDate(user.created_at)}
                                             </TableCell>
                                         </TableRow>
                                     ))}
                                     {users.length === 0 && (
                                         <TableRow>
-                                            <TableCell colSpan={5} className="text-center text-slate-500 py-8">
+                                            <TableCell colSpan={5} className="text-center text-slate-500 dark:text-slate-500 py-8">
                                                 No users found
                                             </TableCell>
                                         </TableRow>
@@ -196,32 +196,32 @@ export default function AdminPage() {
                     </Card>
 
                     {/* Sessions table */}
-                    <Card className="bg-slate-900 border-slate-800">
+                    <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
                         <CardHeader>
-                            <CardTitle className="text-white text-base">All Sessions</CardTitle>
+                            <CardTitle className="text-slate-900 dark:text-white text-base">All Sessions</CardTitle>
                         </CardHeader>
                         <CardContent className="p-0">
                             <Table>
                                 <TableHeader>
-                                    <TableRow className="border-slate-800 hover:bg-transparent">
-                                        <TableHead className="text-slate-400">ID</TableHead>
-                                        <TableHead className="text-slate-400">Type</TableHead>
-                                        <TableHead className="text-slate-400">Status</TableHead>
-                                        <TableHead className="text-slate-400">Player</TableHead>
-                                        <TableHead className="text-slate-400">Created</TableHead>
-                                        <TableHead className="text-slate-400 text-right">Actions</TableHead>
+                                    <TableRow className="border-slate-200 dark:border-slate-800 hover:bg-transparent">
+                                        <TableHead className="text-slate-500 dark:text-slate-500 dark:text-slate-400">ID</TableHead>
+                                        <TableHead className="text-slate-500 dark:text-slate-500 dark:text-slate-400">Type</TableHead>
+                                        <TableHead className="text-slate-500 dark:text-slate-500 dark:text-slate-400">Status</TableHead>
+                                        <TableHead className="text-slate-500 dark:text-slate-500 dark:text-slate-400">Player</TableHead>
+                                        <TableHead className="text-slate-500 dark:text-slate-500 dark:text-slate-400">Created</TableHead>
+                                        <TableHead className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-right">Actions</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {sessions.map((session) => (
-                                        <TableRow key={session.id} className="border-slate-800 hover:bg-slate-800/50">
-                                            <TableCell className="text-slate-400 text-sm">
+                                        <TableRow key={session.id} className="border-slate-200 dark:border-slate-800 hover:bg-slate-100/50 dark:bg-slate-800/50">
+                                            <TableCell className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-sm">
                                                 #{session.id}
                                             </TableCell>
                                             <TableCell>
                                                 <Badge
                                                     variant="outline"
-                                                    className="capitalize text-xs border-slate-700 text-slate-400"
+                                                    className="capitalize text-xs border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-500 dark:text-slate-400"
                                                 >
                                                     {session.session_type}
                                                 </Badge>
@@ -234,10 +234,10 @@ export default function AdminPage() {
                                                     {session.status}
                                                 </Badge>
                                             </TableCell>
-                                            <TableCell className="text-slate-400 text-sm">
+                                            <TableCell className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-sm">
                                                 #{session.player_id}
                                             </TableCell>
-                                            <TableCell className="text-slate-400 text-sm">
+                                            <TableCell className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-sm">
                                                 {formatDate(session.created_at)}
                                             </TableCell>
                                             <TableCell className="text-right">
@@ -252,23 +252,23 @@ export default function AdminPage() {
                                                             <Trash2 className="h-3.5 w-3.5" />
                                                         </Button>
                                                     </AlertDialogTrigger>
-                                                    <AlertDialogContent className="bg-slate-900 border-slate-800">
+                                                    <AlertDialogContent className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
                                                         <AlertDialogHeader>
-                                                            <AlertDialogTitle className="text-white">
+                                                            <AlertDialogTitle className="text-slate-900 dark:text-white">
                                                                 Delete Session #{session.id}?
                                                             </AlertDialogTitle>
-                                                            <AlertDialogDescription className="text-slate-400">
+                                                            <AlertDialogDescription className="text-slate-500 dark:text-slate-500 dark:text-slate-400">
                                                                 This will permanently delete the session, its video, and all
                                                                 analysis data. This action cannot be undone.
                                                             </AlertDialogDescription>
                                                         </AlertDialogHeader>
                                                         <AlertDialogFooter>
-                                                            <AlertDialogCancel className="bg-slate-800 border-slate-700 text-white hover:bg-slate-700">
+                                                            <AlertDialogCancel className="bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700">
                                                                 Cancel
                                                             </AlertDialogCancel>
                                                             <AlertDialogAction
                                                                 onClick={() => handleDelete(session.id)}
-                                                                className="bg-red-600 hover:bg-red-700 text-white"
+                                                                className="bg-red-600 hover:bg-red-700 text-slate-900 dark:text-white"
                                                             >
                                                                 Delete
                                                             </AlertDialogAction>
@@ -280,7 +280,7 @@ export default function AdminPage() {
                                     ))}
                                     {sessions.length === 0 && (
                                         <TableRow>
-                                            <TableCell colSpan={6} className="text-center text-slate-500 py-8">
+                                            <TableCell colSpan={6} className="text-center text-slate-500 dark:text-slate-500 py-8">
                                                 No sessions found
                                             </TableCell>
                                         </TableRow>

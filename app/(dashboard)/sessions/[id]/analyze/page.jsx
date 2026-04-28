@@ -68,7 +68,7 @@ export default function SessionAnalyzePage() {
     const connectSSE = useCallback((taskId) => {
         if (esRef.current) esRef.current.close()
 
-        const es = new EventSource(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'}/analysis/progress/${taskId}`, {
+        const es = new EventSource(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/analysis/progress/${taskId}`, {
             withCredentials: true
         })
 
@@ -161,12 +161,12 @@ export default function SessionAnalyzePage() {
 
     if (loading) {
         return (
-            <div className="flex flex-col min-h-screen bg-[#0f172a]">
+            <div className="flex flex-col min-h-screen bg-slate-100 dark:bg-[#0f172a]">
                 <Navbar title="Run Analysis" />
                 <div className="p-6 space-y-6 max-w-4xl mx-auto w-full">
-                    <Skeleton className="h-10 w-1/2 bg-slate-800" />
-                    <Skeleton className="h-40 w-full bg-slate-800" />
-                    <Skeleton className="h-64 w-full bg-slate-800" />
+                    <Skeleton className="h-10 w-1/2 bg-slate-100 dark:bg-slate-800" />
+                    <Skeleton className="h-40 w-full bg-slate-100 dark:bg-slate-800" />
+                    <Skeleton className="h-64 w-full bg-slate-100 dark:bg-slate-800" />
                 </div>
             </div>
         )
@@ -175,7 +175,7 @@ export default function SessionAnalyzePage() {
     const activeVideo = progressData?.video_id ? videos.find(v => v.id === progressData.video_id) : null
 
     return (
-        <div className="flex flex-col min-h-screen bg-[#0f172a] text-slate-200">
+        <div className="flex flex-col min-h-screen bg-slate-100 dark:bg-[#0f172a] text-slate-700 dark:text-slate-200">
             <Navbar title="Run Analysis" />
             <div className="flex-1 p-6 max-w-4xl mx-auto w-full">
                 <PageHeader
@@ -188,20 +188,20 @@ export default function SessionAnalyzePage() {
 
                 <div className="space-y-8">
                     {/* Header Actions */}
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 bg-[#1e293b] rounded-xl border border-slate-700">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 bg-[#1e293b] rounded-xl border border-slate-300 dark:border-slate-700">
                         <div>
-                            <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                            <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
                                 <PlayCircle className="h-5 w-5 text-green-500" />
                                 Ready to Analyze
                             </h2>
-                            <p className="text-slate-400 text-sm mt-1">
+                            <p className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-sm mt-1">
                                 {videos.length} videos available for processing in this session.
                             </p>
                         </div>
                         <Button 
                             onClick={handleTriggerAll} 
                             disabled={isProcessing || videos.length === 0}
-                            className="bg-green-600 hover:bg-green-700 text-white px-8"
+                            className="bg-green-600 hover:bg-green-700 text-slate-900 dark:text-white px-8"
                         >
                             {isProcessing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : '🚀 Analyze All Videos'}
                         </Button>
@@ -212,7 +212,7 @@ export default function SessionAnalyzePage() {
                         <Card className="bg-[#1e293b] border-green-500/50 shadow-lg shadow-green-500/5 animate-in fade-in slide-in-from-top-4 duration-500">
                             <CardHeader className="pb-2">
                                 <div className="flex justify-between items-center">
-                                    <CardTitle className="text-white text-lg flex items-center gap-2">
+                                    <CardTitle className="text-slate-900 dark:text-white text-lg flex items-center gap-2">
                                         {activeVideo ? `Analyzing: ${activeVideo.original_filename}` : 'Batch Processing Session'}
                                     </CardTitle>
                                     <Badge variant="outline" className="text-green-400 border-green-500/30">
@@ -222,8 +222,8 @@ export default function SessionAnalyzePage() {
                             </CardHeader>
                             <CardContent className="space-y-6">
                                 <div className="space-y-2">
-                                    <Progress value={progressData?.percent} className="h-2 bg-slate-800 transition-all duration-500" />
-                                    <p className="text-sm text-slate-400 italic">Current Stage: {progressData?.stage}</p>
+                                    <Progress value={progressData?.percent} className="h-2 bg-slate-100 dark:bg-slate-800 transition-all duration-500" />
+                                    <p className="text-sm text-slate-500 dark:text-slate-500 dark:text-slate-400 italic">Current Stage: {progressData?.stage}</p>
                                 </div>
 
                                 <div className="space-y-4">
@@ -239,8 +239,8 @@ export default function SessionAnalyzePage() {
                                                 </div>
                                                 <span className={cn(
                                                     "text-sm font-medium",
-                                                    status === 'active' ? "text-white" : 
-                                                    status === 'complete' ? "text-slate-300" : "text-slate-500"
+                                                    status === 'active' ? "text-slate-900 dark:text-white" : 
+                                                    status === 'complete' ? "text-slate-500 dark:text-slate-600 dark:text-slate-300" : "text-slate-500 dark:text-slate-500"
                                                 )}>
                                                     {stage}
                                                 </span>
@@ -264,7 +264,7 @@ export default function SessionAnalyzePage() {
                             </div>
                             <Button 
                                 onClick={() => router.push(`/sessions/${id}`)}
-                                className="bg-green-600 hover:bg-green-700 text-white text-xs h-8"
+                                className="bg-green-600 hover:bg-green-700 text-slate-900 dark:text-white text-xs h-8"
                             >
                                 View Detailed Results <ArrowRight className="ml-2 h-3 w-3" />
                             </Button>
@@ -292,18 +292,18 @@ export default function SessionAnalyzePage() {
 
                     {/* Video List */}
                     <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-white">Individual Videos</h3>
+                        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Individual Videos</h3>
                         <div className="grid grid-cols-1 gap-3">
                             {videos.map((video) => (
-                                <Card key={video.id} className="bg-[#1e293b] border-slate-700">
+                                <Card key={video.id} className="bg-[#1e293b] border-slate-300 dark:border-slate-700">
                                     <CardContent className="p-4 flex items-center justify-between">
                                         <div className="flex items-center gap-3">
-                                            <div className="h-10 w-10 rounded bg-slate-800 flex items-center justify-center shrink-0">
-                                                <Play className="h-4 w-4 text-slate-500" />
+                                            <div className="h-10 w-10 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0">
+                                                <Play className="h-4 w-4 text-slate-500 dark:text-slate-500" />
                                             </div>
                                             <div>
-                                                <p className="text-sm font-medium text-white">{video.original_filename}</p>
-                                                <Badge variant="outline" className="text-[10px] mt-1 h-4 px-1.5 text-slate-500 border-slate-700">
+                                                <p className="text-sm font-medium text-slate-900 dark:text-white">{video.original_filename}</p>
+                                                <Badge variant="outline" className="text-[10px] mt-1 h-4 px-1.5 text-slate-500 dark:text-slate-500 border-slate-300 dark:border-slate-700">
                                                     {video.status === 'done' ? 'Processed' : 'Unprocessed'}
                                                 </Badge>
                                             </div>
@@ -323,9 +323,9 @@ export default function SessionAnalyzePage() {
                         </div>
                     </div>
 
-                    <div className="p-4 bg-slate-900/50 rounded-lg border border-slate-800 flex gap-3">
+                    <div className="p-4 bg-white dark:bg-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-800 flex gap-3">
                         <Info className="h-5 w-5 text-blue-500 shrink-0" />
-                        <p className="text-xs text-slate-500 leading-relaxed">
+                        <p className="text-xs text-slate-500 dark:text-slate-500 leading-relaxed">
                             AI analysis usually takes 1-3 minutes per video depending on duration and frame rate. 
                             You can navigate away after starting the process; analysis will continue in the background.
                         </p>

@@ -28,7 +28,7 @@ export default function PlayersPage() {
                     description="Manage your cricket players"
                     action={
                         <Link href="/players/new">
-                            <Button className="bg-green-600 hover:bg-green-700 text-white">
+                            <Button className="bg-green-600 hover:bg-green-700 text-slate-900 dark:text-white">
                                 <Plus className="h-4 w-4 mr-2" />
                                 Add Player
                             </Button>
@@ -38,12 +38,12 @@ export default function PlayersPage() {
 
                 {/* Search */}
                 <div className="relative mb-6 max-w-sm">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-slate-500 dark:text-slate-400" />
                     <Input
                         placeholder="Search players..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="pl-10 bg-slate-900 border-slate-800 text-white placeholder:text-slate-500"
+                        className="pl-10 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white placeholder:text-slate-500"
                     />
                 </div>
 
@@ -62,17 +62,17 @@ export default function PlayersPage() {
                 {!loading && !error && filtered.length === 0 && (
                     <div className="flex flex-col items-center justify-center py-20 text-center">
                         <Users className="h-16 w-16 text-slate-700 mb-4" />
-                        <h3 className="text-white font-semibold text-lg mb-2">
+                        <h3 className="text-slate-900 dark:text-white font-semibold text-lg mb-2">
                             {search ? 'No players found' : 'No players yet'}
                         </h3>
-                        <p className="text-slate-400 text-sm mb-4">
+                        <p className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-sm mb-4">
                             {search
                                 ? 'Try a different search term'
                                 : 'Add your first player to get started'}
                         </p>
                         {!search && (
                             <Link href="/players/new">
-                                <Button className="bg-green-600 hover:bg-green-700 text-white">
+                                <Button className="bg-green-600 hover:bg-green-700 text-slate-900 dark:text-white">
                                     <Plus className="h-4 w-4 mr-2" />
                                     Add Player
                                 </Button>

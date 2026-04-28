@@ -29,9 +29,9 @@ const actions = [
 
 export default function QuickActions() {
     return (
-        <Card className="bg-slate-900 border-slate-800">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm">
             <CardHeader>
-                <CardTitle className="text-white text-base">Quick Actions</CardTitle>
+                <CardTitle className="text-slate-900 dark:text-white text-base">Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-1 gap-3">
                 {actions.map((action) => {

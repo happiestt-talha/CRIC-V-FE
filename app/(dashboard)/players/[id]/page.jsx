@@ -59,23 +59,23 @@ export default function PlayerProfilePage({ params }) {
 
                 {/* Player Info Card */}
                 {player && (
-                    <Card className="bg-slate-900 border-slate-800 mb-6">
+                    <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 mb-6">
                         <CardContent className="p-6">
                             <div className="flex items-center gap-5">
                                 <div className="flex items-center justify-center w-16 h-16 rounded-full bg-green-600/20 text-green-400 text-2xl font-bold">
                                     {player.full_name?.charAt(0)?.toUpperCase()}
                                 </div>
                                 <div className="flex-1">
-                                    <h2 className="text-white text-xl font-bold">{player.full_name}</h2>
-                                    {player.age && <p className="text-slate-400 text-sm">Age: {player.age}</p>}
+                                    <h2 className="text-slate-900 dark:text-white text-xl font-bold">{player.full_name}</h2>
+                                    {player.age && <p className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-sm">Age: {player.age}</p>}
                                     <div className="flex gap-2 mt-2">
                                         {player.batting_hand && (
-                                            <Badge variant="outline" className="border-slate-700 text-slate-400 capitalize text-xs">
+                                            <Badge variant="outline" className="border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-500 dark:text-slate-400 capitalize text-xs">
                                                 {player.batting_hand} hand
                                             </Badge>
                                         )}
                                         {player.bowling_style && (
-                                            <Badge variant="outline" className="border-slate-700 text-slate-400 text-xs">
+                                            <Badge variant="outline" className="border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-500 dark:text-slate-400 text-xs">
                                                 {player.bowling_style?.replace(/_/g, ' ')}
                                             </Badge>
                                         )}
@@ -83,8 +83,8 @@ export default function PlayerProfilePage({ params }) {
                                 </div>
                                 <div className="grid grid-cols-2 gap-4 text-center">
                                     <div>
-                                        <p className="text-2xl font-bold text-white">{sessions.length}</p>
-                                        <p className="text-slate-400 text-xs">Sessions</p>
+                                        <p className="text-2xl font-bold text-slate-900 dark:text-white">{sessions.length}</p>
+                                        <p className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-xs">Sessions</p>
                                     </div>
                                     <div>
                                         <p className="text-2xl font-bold text-green-400">
@@ -92,7 +92,7 @@ export default function PlayerProfilePage({ params }) {
                                                 ? `${Math.round(bowlingInsights.speed_consistency.avg_speed)}`
                                                 : '—'}
                                         </p>
-                                        <p className="text-slate-400 text-xs">Avg km/h</p>
+                                        <p className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-xs">Avg km/h</p>
                                     </div>
                                 </div>
                             </div>
@@ -102,14 +102,14 @@ export default function PlayerProfilePage({ params }) {
 
                 {/* Tabs */}
                 <Tabs defaultValue="bowling">
-                    <TabsList className="bg-slate-900 border border-slate-800 mb-6">
-                        <TabsTrigger value="bowling" className="data-[state=active]:bg-green-600 data-[state=active]:text-white text-slate-400">
+                    <TabsList className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 mb-6">
+                        <TabsTrigger value="bowling" className="data-[state=active]:bg-green-600 data-[state=active]:text-white text-slate-500 dark:text-slate-500 dark:text-slate-400">
                             Bowling
                         </TabsTrigger>
-                        <TabsTrigger value="batting" className="data-[state=active]:bg-green-600 data-[state=active]:text-white text-slate-400">
+                        <TabsTrigger value="batting" className="data-[state=active]:bg-green-600 data-[state=active]:text-white text-slate-500 dark:text-slate-500 dark:text-slate-400">
                             Batting
                         </TabsTrigger>
-                        <TabsTrigger value="sessions" className="data-[state=active]:bg-green-600 data-[state=active]:text-white text-slate-400">
+                        <TabsTrigger value="sessions" className="data-[state=active]:bg-green-600 data-[state=active]:text-white text-slate-500 dark:text-slate-500 dark:text-slate-400">
                             Sessions
                         </TabsTrigger>
                     </TabsList>
@@ -119,13 +119,13 @@ export default function PlayerProfilePage({ params }) {
                         {bowlingLoading ? (
                             <div className="flex justify-center py-10"><LoadingSpinner /></div>
                         ) : !bowlingInsights ? (
-                            <p className="text-slate-400 text-center py-10">No bowling data yet</p>
+                            <p className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-center py-10">No bowling data yet</p>
                         ) : (
                             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
                                 {/* Speed stats */}
-                                <Card className="bg-slate-900 border-slate-800">
+                                <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
                                     <CardHeader>
-                                        <CardTitle className="text-white text-sm">Speed Consistency</CardTitle>
+                                        <CardTitle className="text-slate-900 dark:text-white text-sm">Speed Consistency</CardTitle>
                                     </CardHeader>
                                     <CardContent className="grid grid-cols-3 gap-4">
                                         {[
@@ -133,52 +133,52 @@ export default function PlayerProfilePage({ params }) {
                                             { label: 'Max Speed', value: formatSpeed(bowlingInsights.speed_consistency?.max_speed) },
                                             { label: 'Consistency', value: formatPercentage(bowlingInsights.speed_consistency?.consistency_score) },
                                         ].map((stat) => (
-                                            <div key={stat.label} className="text-center p-3 bg-slate-800 rounded-lg">
+                                            <div key={stat.label} className="text-center p-3 bg-slate-100 dark:bg-slate-800 rounded-lg">
                                                 <p className="text-green-400 text-lg font-bold">{stat.value}</p>
-                                                <p className="text-slate-400 text-xs mt-1">{stat.label}</p>
+                                                <p className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-xs mt-1">{stat.label}</p>
                                             </div>
                                         ))}
                                     </CardContent>
                                 </Card>
 
                                 {/* ICC compliance */}
-                                <Card className="bg-slate-900 border-slate-800">
+                                <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
                                     <CardHeader>
-                                        <CardTitle className="text-white text-sm">ICC Compliance</CardTitle>
+                                        <CardTitle className="text-slate-900 dark:text-white text-sm">ICC Compliance</CardTitle>
                                     </CardHeader>
                                     <CardContent>
                                         {bowlingInsights.icc_compliance ? (
                                             <div className="space-y-3">
                                                 <div className="flex justify-between items-center">
-                                                    <span className="text-slate-400 text-sm">Compliant deliveries</span>
+                                                    <span className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-sm">Compliant deliveries</span>
                                                     <span className="text-green-400 font-bold">
                                                         {formatPercentage(bowlingInsights.icc_compliance.compliant_percentage)}
                                                     </span>
                                                 </div>
                                                 <div className="flex justify-between items-center">
-                                                    <span className="text-slate-400 text-sm">Avg elbow angle</span>
-                                                    <span className="text-white font-bold">
+                                                    <span className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-sm">Avg elbow angle</span>
+                                                    <span className="text-slate-900 dark:text-white font-bold">
                                                         {bowlingInsights.icc_compliance.avg_elbow_angle?.toFixed(1)}°
                                                     </span>
                                                 </div>
                                                 <div className="flex justify-between items-center">
-                                                    <span className="text-slate-400 text-sm">Total violations</span>
+                                                    <span className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-sm">Total violations</span>
                                                     <Badge variant={bowlingInsights.icc_compliance.total_violations > 0 ? 'destructive' : 'default'}>
                                                         {bowlingInsights.icc_compliance.total_violations}
                                                     </Badge>
                                                 </div>
                                             </div>
                                         ) : (
-                                            <p className="text-slate-400 text-sm">No compliance data</p>
+                                            <p className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-sm">No compliance data</p>
                                         )}
                                     </CardContent>
                                 </Card>
 
                                 {/* Speed trend chart */}
                                 {speedTrendData.length > 0 && (
-                                    <Card className="bg-slate-900 border-slate-800 xl:col-span-2">
+                                    <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 xl:col-span-2">
                                         <CardHeader>
-                                            <CardTitle className="text-white text-sm">Speed Trend</CardTitle>
+                                            <CardTitle className="text-slate-900 dark:text-white text-sm">Speed Trend</CardTitle>
                                         </CardHeader>
                                         <CardContent>
                                             <ResponsiveContainer width="100%" height={200}>
@@ -205,14 +205,14 @@ export default function PlayerProfilePage({ params }) {
                         {battingLoading ? (
                             <div className="flex justify-center py-10"><LoadingSpinner /></div>
                         ) : !battingInsights ? (
-                            <p className="text-slate-400 text-center py-10">No batting data yet</p>
+                            <p className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-center py-10">No batting data yet</p>
                         ) : (
                             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
                                 {/* Shot distribution */}
                                 {shotDistributionData.length > 0 && (
-                                    <Card className="bg-slate-900 border-slate-800">
+                                    <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
                                         <CardHeader>
-                                            <CardTitle className="text-white text-sm">Shot Distribution</CardTitle>
+                                            <CardTitle className="text-slate-900 dark:text-white text-sm">Shot Distribution</CardTitle>
                                         </CardHeader>
                                         <CardContent>
                                             <ResponsiveContainer width="100%" height={220}>
@@ -244,24 +244,24 @@ export default function PlayerProfilePage({ params }) {
                                 )}
 
                                 {/* Technique scores */}
-                                <Card className="bg-slate-900 border-slate-800">
+                                <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
                                     <CardHeader>
-                                        <CardTitle className="text-white text-sm">Technique Scores</CardTitle>
+                                        <CardTitle className="text-slate-900 dark:text-white text-sm">Technique Scores</CardTitle>
                                     </CardHeader>
                                     <CardContent className="space-y-3">
                                         {battingInsights.technique_scores &&
                                             Object.entries(battingInsights.technique_scores).map(([key, value]) => (
                                                 <div key={key}>
                                                     <div className="flex justify-between mb-1">
-                                                        <span className="text-slate-400 text-xs capitalize">
+                                                        <span className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-xs capitalize">
                                                             {key.replace(/_/g, ' ')}
                                                         </span>
-                                                        <span className="text-white text-xs font-medium">
+                                                        <span className="text-slate-900 dark:text-white text-xs font-medium">
                                                             {typeof value === 'number' ? `${Math.round(value)}/100` : value}
                                                         </span>
                                                     </div>
                                                     {typeof value === 'number' && (
-                                                        <div className="w-full bg-slate-800 rounded-full h-1.5">
+                                                        <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5">
                                                             <div
                                                                 className="h-1.5 rounded-full bg-green-500"
                                                                 style={{ width: `${Math.min(value, 100)}%` }}
@@ -281,7 +281,7 @@ export default function PlayerProfilePage({ params }) {
                         {sessionsLoading ? (
                             <div className="flex justify-center py-10"><LoadingSpinner /></div>
                         ) : sessions.length === 0 ? (
-                            <p className="text-slate-400 text-center py-10">No sessions for this player</p>
+                            <p className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-center py-10">No sessions for this player</p>
                         ) : (
                             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                                 {sessions.map((session) => (

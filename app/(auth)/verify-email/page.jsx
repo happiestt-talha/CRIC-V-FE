@@ -39,14 +39,14 @@ function VerifyEmailContent() {
     }, [token])
 
     return (
-        <Card className="bg-slate-900 border-slate-800">
+        <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
             <CardHeader className="text-center">
-                <CardTitle className="text-white text-xl">
+                <CardTitle className="text-slate-900 dark:text-white text-xl">
                     {status === 'verifying' && 'Verifying Email...'}
                     {status === 'success' && 'Verification Complete'}
                     {status === 'error' && 'Verification Failed'}
                 </CardTitle>
-                <CardDescription className="text-slate-400">
+                <CardDescription className="text-slate-500 dark:text-slate-500 dark:text-slate-400">
                     {status === 'verifying' && 'Please wait while we verify your account.'}
                     {status === 'success' && 'Your email has been verified. You can now access all features.'}
                     {status === 'error' && 'We could not verify your email address.'}
@@ -59,7 +59,7 @@ function VerifyEmailContent() {
                     {status === 'error' && <XCircle className="h-12 w-12 text-red-500" />}
                 </div>
 
-                <Button asChild className="w-full bg-green-600 hover:bg-green-700 text-white">
+                <Button asChild className="w-full bg-green-600 hover:bg-green-700 text-slate-900 dark:text-white">
                     <Link href={status === 'success' ? '/dashboard' : '/login'}>
                         {status === 'success' ? 'Go to Dashboard' : 'Back to Login'}
                     </Link>
@@ -71,17 +71,17 @@ function VerifyEmailContent() {
 
 export default function VerifyEmailPage() {
     return (
-        <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-slate-200 dark:bg-slate-950 flex items-center justify-center p-4">
             <div className="w-full max-w-md">
                 <div className="text-center mb-8">
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-600 mb-4">
                         <span className="text-2xl">🏏</span>
                     </div>
-                    <h1 className="text-3xl font-bold text-white">CRIC-V</h1>
+                    <h1 className="text-3xl font-bold text-slate-900 dark:text-white">CRIC-V</h1>
                 </div>
 
                 <Suspense fallback={
-                    <Card className="bg-slate-900 border-slate-800">
+                    <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
                         <CardContent className="pt-6 flex justify-center">
                             <Loader2 className="h-8 w-8 animate-spin text-green-500" />
                         </CardContent>

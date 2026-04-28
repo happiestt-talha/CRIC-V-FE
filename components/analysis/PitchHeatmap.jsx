@@ -26,7 +26,7 @@ const lengthLabels = {
 const PitchHeatmap = ({ insights }) => {
   if (!insights) {
     return (
-      <div className="p-10 text-center text-slate-500 border-2 border-dashed border-slate-800 rounded-xl bg-slate-900/50">
+      <div className="p-10 text-center text-slate-500 dark:text-slate-500 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900/50">
         <Activity className="w-10 h-10 mx-auto mb-4 opacity-10" />
         <p className="text-sm font-medium">No advanced bowling insights available yet.</p>
       </div>
@@ -45,7 +45,7 @@ const PitchHeatmap = ({ insights }) => {
   });
 
   const getHeatColor = (val) => {
-    if (!val || val === 0) return 'bg-slate-800/30';
+    if (!val || val === 0) return 'bg-slate-50 dark:bg-slate-800/30';
     const intensity = val / maxFreq;
     if (intensity > 0.8) return 'bg-green-400';
     if (intensity > 0.6) return 'bg-green-500';
@@ -65,11 +65,11 @@ const PitchHeatmap = ({ insights }) => {
             { label: 'Consistency', value: speed_consistency.consistency_score, unit: '%' },
             { label: 'Total Deliveries', value: speed_consistency.total_deliveries, unit: '' },
           ].map((stat, i) => (
-            <div key={i} className="bg-slate-900/50 border border-slate-800 p-3 rounded-lg ring-1 ring-slate-800/50">
-              <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">{stat.label}</p>
+            <div key={i} className="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-3 rounded-lg ring-1 ring-slate-800/50">
+              <p className="text-[10px] font-black text-slate-500 dark:text-slate-500 uppercase tracking-widest mb-1">{stat.label}</p>
               <div className="flex items-baseline gap-1">
-                <span className="text-xl font-black text-slate-200 tabular-nums tracking-tighter">{stat.value}</span>
-                <span className="text-[10px] font-bold text-slate-600">{stat.unit}</span>
+                <span className="text-xl font-black text-slate-700 dark:text-slate-200 tabular-nums tracking-tighter">{stat.value}</span>
+                <span className="text-[10px] font-bold text-slate-500 dark:text-slate-600">{stat.unit}</span>
               </div>
             </div>
           ))}
@@ -77,12 +77,12 @@ const PitchHeatmap = ({ insights }) => {
       )}
 
       {/* Heatmap Grid */}
-      <Card className="bg-slate-950 border-slate-800 p-8 shadow-2xl overflow-hidden relative">
+      <Card className="bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 p-8 shadow-2xl overflow-hidden relative">
         <div className="absolute top-0 right-0 w-64 h-64 -mr-32 -mt-32 bg-green-500/5 rounded-full blur-3xl pointer-events-none" />
         
         <div className="flex flex-col items-center relative z-10">
           <div className="w-full flex justify-between items-center mb-10">
-            <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest">Pitch Distribution Map</h3>
+            <h3 className="text-sm font-black text-slate-500 dark:text-slate-500 dark:text-slate-400 uppercase tracking-widest">Pitch Distribution Map</h3>
             <div className="flex gap-2">
                <Badge className="bg-green-500/10 text-green-400 border-green-900/30 font-black text-[10px]">HEATMAP ACTIVE</Badge>
             </div>
@@ -101,7 +101,7 @@ const PitchHeatmap = ({ insights }) => {
               <div />
               <div className="grid grid-cols-5 text-center px-1">
                 {PITCH_LINES.map(line => (
-                  <span key={line} className="text-[8px] font-black text-slate-600 uppercase tracking-tighter transform -rotate-12">
+                  <span key={line} className="text-[8px] font-black text-slate-500 dark:text-slate-600 uppercase tracking-tighter transform -rotate-12">
                     {lineLabels[line]}
                   </span>
                 ))}
@@ -112,7 +112,7 @@ const PitchHeatmap = ({ insights }) => {
             <div className="space-y-1.5">
               {PITCH_LENGTHS.map(length => (
                 <div key={length} className="grid grid-cols-[80px_1fr] items-center gap-3">
-                  <span className="text-[9px] font-black text-slate-500 text-right uppercase tracking-tighter">
+                  <span className="text-[9px] font-black text-slate-500 dark:text-slate-500 text-right uppercase tracking-tighter">
                     {lengthLabels[length]}
                   </span>
                   <div className="grid grid-cols-5 gap-1.5">
@@ -138,27 +138,27 @@ const PitchHeatmap = ({ insights }) => {
           </div>
 
           {/* Legend & Summary */}
-          <div className="w-full flex flex-col md:flex-row items-center justify-between mt-12 pt-8 border-t border-slate-900 gap-8">
+          <div className="w-full flex flex-col md:flex-row items-center justify-between mt-12 pt-8 border-t border-slate-200 dark:border-slate-900 gap-8">
             <div className="flex items-center gap-3">
-              <span className="text-[8px] font-black text-slate-600 uppercase tracking-widest">Frequency</span>
+              <span className="text-[8px] font-black text-slate-500 dark:text-slate-600 uppercase tracking-widest">Frequency</span>
               <div className="flex gap-1">
                 {['bg-green-900', 'bg-green-700', 'bg-green-600', 'bg-green-500', 'bg-green-400'].map(c => (
                   <div key={c} className={cn("w-3 h-3 rounded-px shadow-sm", c)} />
                 ))}
               </div>
-              <span className="text-[8px] font-black text-slate-600 uppercase tracking-widest">High</span>
+              <span className="text-[8px] font-black text-slate-500 dark:text-slate-600 uppercase tracking-widest">High</span>
             </div>
 
             <div className="flex gap-6">
               <div className="flex flex-col items-end">
-                 <p className="text-[8px] font-black text-slate-600 uppercase mb-1.5 tracking-widest">Top Line</p>
-                 <Badge variant="outline" className="bg-slate-900/80 text-green-400 border-green-900/50 font-black px-3">
+                 <p className="text-[8px] font-black text-slate-500 dark:text-slate-600 uppercase mb-1.5 tracking-widest">Top Line</p>
+                 <Badge variant="outline" className="bg-white dark:bg-slate-900/80 text-green-500 dark:text-green-400 border-green-200 dark:border-green-900/50 font-black px-3">
                    {lineLabels[line_length_heatmap?.most_common_line] || 'N/A'}
                  </Badge>
               </div>
               <div className="flex flex-col items-end">
-                 <p className="text-[8px] font-black text-slate-600 uppercase mb-1.5 tracking-widest">Top Length</p>
-                 <Badge variant="outline" className="bg-slate-900/80 text-blue-400 border-blue-900/50 font-black px-3">
+                 <p className="text-[8px] font-black text-slate-500 dark:text-slate-600 uppercase mb-1.5 tracking-widest">Top Length</p>
+                 <Badge variant="outline" className="bg-white dark:bg-slate-900/80 text-blue-500 dark:text-blue-400 border-blue-200 dark:border-blue-900/50 font-black px-3">
                    {lengthLabels[line_length_heatmap?.most_common_length] || 'N/A'}
                  </Badge>
               </div>

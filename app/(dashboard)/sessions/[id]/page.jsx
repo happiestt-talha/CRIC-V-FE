@@ -86,8 +86,11 @@ export default function SessionDetailPage({ params }) {
     // Polling for analysis
     useEffect(() => {
         let interval;
+        let isPolling = false;
         if (sessionId && (session?.status === 'processing' || session?.status === 'analyzing' || session?.status === 'uploaded')) {
             interval = setInterval(async () => {
+                if (isPolling) return;
+                isPolling = true;
                 try {
                     const updatedSession = await sessionsApi.getSession(sessionId)
                     if (updatedSession.status === 'completed' || updatedSession.status === 'failed' || (updatedSession.status === 'uploaded' && updatedSession.annotated_video_path)) {
@@ -96,7 +99,12 @@ export default function SessionDetailPage({ params }) {
                         clearInterval(interval)
                     }
                 } catch (e) {
-                    console.error("Polling error in useEffect:", e)
+                    // Suppress network errors during development/reloads
+                    if (e.message !== 'Network Error') {
+                        console.error("Polling error:", e)
+                    }
+                } finally {
+                    isPolling = false;
                 }
             }, 3000)
         }
@@ -112,8 +120,10 @@ export default function SessionDetailPage({ params }) {
             })
             
             // Poll every 3 seconds until completed or failed
+            let isPolling = false;
             const pollInterval = setInterval(async () => {
-                if (!sessionId) return
+                if (!sessionId || isPolling) return;
+                isPolling = true;
                 try {
                     const updated = await sessionsApi.getSession(sessionId)
                     if (refreshSession) refreshSession()
@@ -130,7 +140,11 @@ export default function SessionDetailPage({ params }) {
                         }
                     }
                 } catch (e) {
-                    console.error('Polling error in handleReanalyze:', e)
+                    if (e.message !== 'Network Error') {
+                        console.error('Polling error in handleReanalyze:', e)
+                    }
+                } finally {
+                    isPolling = false;
                 }
             }, 3000)
             
@@ -157,7 +171,7 @@ export default function SessionDetailPage({ params }) {
 
     if (sessionLoading || (loading && !session)) {
         return (
-            <div className="flex flex-col min-h-screen bg-[#0f172a]">
+            <div className="flex flex-col min-h-screen bg-slate-100 dark:bg-[#0f172a]">
                 <Navbar title="Session" />
                 <div className="flex-1 flex items-center justify-center">
                     <LoadingSpinner text="Loading session details..." />
@@ -173,24 +187,24 @@ export default function SessionDetailPage({ params }) {
     const annotatedUrl = getAnnotatedVideoUrl(sessionId)
 
     return (
-        <div className="flex flex-col min-h-screen bg-[#0f172a] text-slate-200">
+        <div className="flex flex-col min-h-screen bg-slate-100 dark:bg-[#0f172a] text-slate-700 dark:text-slate-200">
             <Navbar title="Session Analysis" />
             
             <div className="flex-1 w-full p-4 md:p-6 space-y-6 overflow-x-hidden">
                 {/* Header Section */}
                 <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 flex-wrap">
                     <div className="space-y-1">
-                        <Link href="/sessions" className="text-xs font-bold text-slate-500 hover:text-green-500 flex items-center gap-1 transition-colors group">
+                        <Link href="/sessions" className="text-xs font-bold text-slate-500 dark:text-slate-500 hover:text-green-500 flex items-center gap-1 transition-colors group">
                             <ChevronLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" />
                             BACK TO SESSIONS
                         </Link>
-                        <h1 className="text-2xl lg:text-4xl font-black text-white tracking-tighter uppercase">
+                        <h1 className="text-2xl lg:text-4xl font-black text-slate-900 dark:text-white tracking-tighter uppercase">
                             {session.title || `Session #${session.id}`}
                         </h1>
-                        <div className="flex items-center gap-3 text-sm font-bold text-slate-500">
+                        <div className="flex items-center gap-3 text-sm font-bold text-slate-500 dark:text-slate-500">
                            <span className="flex items-center gap-1"><Calendar className="w-4 h-4 text-green-500/50" /> {formatDate(session.created_at)}</span>
-                           <span className="w-1.5 h-1.5 rounded-full bg-slate-800" />
-                           <span className="flex items-center gap-1 uppercase tracking-widest text-[10px] bg-slate-800/50 px-2 py-0.5 rounded border border-slate-700/50 text-slate-400">
+                           <span className="w-1.5 h-1.5 rounded-full bg-slate-100 dark:bg-slate-800" />
+                           <span className="flex items-center gap-1 uppercase tracking-widest text-[10px] bg-slate-100/50 dark:bg-slate-800/50 px-2 py-0.5 rounded border border-slate-700/50 text-slate-500 dark:text-slate-500 dark:text-slate-400">
                              <Shield className="w-3 h-3" /> {session.session_type}
                            </span>
                         </div>
@@ -226,13 +240,13 @@ export default function SessionDetailPage({ params }) {
                     <div className="lg:col-span-2 space-y-4">
                         <Tabs value={activeVideoTab} onValueChange={setActiveVideoTab} className="w-full">
                             <div className="flex items-center justify-between mb-4">
-                               <TabsList className="bg-slate-900/50 border border-slate-800 p-1 ring-1 ring-slate-800">
-                                  <TabsTrigger value="original" className="data-[state=active]:bg-slate-800 text-[10px] font-black uppercase tracking-wider px-4">ORIGINAL</TabsTrigger>
+                               <TabsList className="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-1 ring-1 ring-slate-200 dark:ring-slate-800">
+                                  <TabsTrigger value="original" className="data-[state=active]:bg-slate-100 dark:bg-slate-800 text-[10px] font-black uppercase tracking-wider px-4">ORIGINAL</TabsTrigger>
                                   <TabsTrigger value="annotated" className="data-[state=active]:bg-green-600 data-[state=active]:text-white text-[10px] font-black uppercase tracking-wider px-4">ANNOTATED</TabsTrigger>
                                </TabsList>
                                <div className="flex items-center gap-2">
                                   <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                                  <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">VIDEO ANALYSIS FEED</span>
+                                  <span className="text-[10px] font-black text-slate-500 dark:text-slate-500 uppercase tracking-widest">VIDEO ANALYSIS FEED</span>
                                </div>
                             </div>
 
@@ -251,16 +265,16 @@ export default function SessionDetailPage({ params }) {
                                       label="AI Annotated Result" 
                                     />
                                 ) : (
-                                    <Card className="aspect-video bg-slate-950/50 border-2 border-dashed border-slate-800 flex flex-col items-center justify-center p-8 text-center space-y-4 shadow-inner ring-1 ring-slate-900">
-                                        <div className="w-16 h-16 rounded-full bg-slate-900 flex items-center justify-center text-slate-700 ring-1 ring-slate-800">
+                                    <Card className="aspect-video bg-slate-50 dark:bg-slate-950/50 border-2 border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center p-8 text-center space-y-4 shadow-inner ring-1 ring-slate-200 dark:ring-slate-900">
+                                        <div className="w-16 h-16 rounded-full bg-white dark:bg-slate-900 flex items-center justify-center text-slate-700 ring-1 ring-slate-800">
                                            <Video className="w-8 h-8" />
                                         </div>
                                         <div className="space-y-1">
-                                           <p className="font-black text-slate-400 text-sm tracking-tight">ANNOTATION NOT READY</p>
-                                           <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest max-w-[200px]">Run analysis to generate AI overlays and metrics.</p>
+                                           <p className="font-black text-slate-500 dark:text-slate-500 dark:text-slate-400 text-sm tracking-tight">ANNOTATION NOT READY</p>
+                                           <p className="text-[10px] text-slate-500 dark:text-slate-600 font-bold uppercase tracking-widest max-w-[200px]">Run analysis to generate AI overlays and metrics.</p>
                                         </div>
                                         <Button 
-                                            className="bg-green-600 hover:bg-green-700 text-white font-black text-[10px] px-8 tracking-widest h-9"
+                                            className="bg-green-600 hover:bg-green-700 text-slate-900 dark:text-white font-black text-[10px] px-8 tracking-widest h-9"
                                             onClick={handleReanalyze}
                                             disabled={reanalyzing}
                                         >
@@ -272,9 +286,9 @@ export default function SessionDetailPage({ params }) {
                         </Tabs>
 
                         {/* Session Metadata Card */}
-                        <Card className="bg-slate-900/50 border-slate-800 shadow-2xl overflow-hidden backdrop-blur-md">
-                           <CardHeader className="border-b border-slate-800 bg-slate-900/80 px-4 py-3">
-                              <CardTitle className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] flex items-center gap-2">
+                        <Card className="bg-white dark:bg-slate-900/50 border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden backdrop-blur-md">
+                           <CardHeader className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/80 px-4 py-3">
+                              <CardTitle className="text-[10px] font-black text-slate-500 dark:text-slate-500 uppercase tracking-[0.2em] flex items-center gap-2">
                                  <FileText className="w-4 h-4 text-green-500/50" /> SESSION METADATA
                               </CardTitle>
                            </CardHeader>
@@ -286,28 +300,28 @@ export default function SessionDetailPage({ params }) {
                                    { icon: <Shield className="w-4 h-4 text-green-500/50" />, label: 'DISCIPLINE', value: session.session_type, capitalize: true },
                                    { icon: <Calendar className="w-4 h-4 text-amber-500/50" />, label: 'RECORDED', value: formatDate(session.created_at) }
                                  ].map((item, i) => (
-                                   <div key={i} className="flex justify-between items-center p-4 hover:bg-slate-800/30 transition-colors">
-                                      <div className="flex items-center gap-3 text-slate-500">
+                                   <div key={i} className="flex justify-between items-center p-4 hover:bg-slate-50 dark:bg-slate-800/30 transition-colors">
+                                      <div className="flex items-center gap-3 text-slate-500 dark:text-slate-500">
                                          {item.icon}
-                                         <span className="text-[10px] font-black uppercase tracking-widest text-slate-600">{item.label}</span>
+                                         <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-600">{item.label}</span>
                                       </div>
-                                      <span className={cn("text-sm font-black text-slate-300", item.capitalize && "capitalize tracking-tight")}>{item.value}</span>
+                                      <span className={cn("text-sm font-black text-slate-500 dark:text-slate-600 dark:text-slate-300", item.capitalize && "capitalize tracking-tight")}>{item.value}</span>
                                    </div>
                                  ))}
                               </div>
                               {session.description && (
-                                <div className="p-4 bg-slate-950/40 border-t border-slate-800/50">
-                                   <p className="text-[9px] font-black text-slate-600 uppercase mb-2 tracking-widest">Coaching Notes</p>
-                                   <p className="text-sm text-slate-400 italic font-medium leading-relaxed">"{session.description}"</p>
+                                <div className="p-4 bg-slate-50 dark:bg-slate-950/40 border-t border-slate-200/50 dark:border-slate-800/50">
+                                   <p className="text-[9px] font-black text-slate-500 dark:text-slate-600 uppercase mb-2 tracking-widest">Coaching Notes</p>
+                                   <p className="text-sm text-slate-500 dark:text-slate-500 dark:text-slate-400 italic font-medium leading-relaxed">"{session.description}"</p>
                                 </div>
                               )}
                            </CardContent>
                         </Card>
 
                         {/* Videos List */}
-                        <Card className="bg-slate-900/50 border-slate-800 shadow-2xl">
-                            <CardHeader className="flex flex-row items-center justify-between px-4 py-3 border-b border-slate-800/50">
-                                <CardTitle className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] flex items-center gap-2">
+                        <Card className="bg-white dark:bg-slate-900/50 border-slate-200 dark:border-slate-800 shadow-2xl">
+                            <CardHeader className="flex flex-row items-center justify-between px-4 py-3 border-b border-slate-200/50 dark:border-slate-800/50">
+                                <CardTitle className="text-[10px] font-black text-slate-500 dark:text-slate-500 uppercase tracking-[0.2em] flex items-center gap-2">
                                     <Video className="h-4 w-4 text-green-500/50" /> MEDIA ASSETS
                                 </CardTitle>
                                 <Button
@@ -323,17 +337,17 @@ export default function SessionDetailPage({ params }) {
                                 {session.videos && session.videos.length > 0 ? (
                                     <div className="space-y-2">
                                         {session.videos.map((vid) => (
-                                            <div key={vid.id} className="group p-3 bg-slate-950/50 rounded-lg border border-slate-800/50 flex items-center justify-between hover:border-slate-600 hover:bg-slate-900 transition-all duration-300">
+                                            <div key={vid.id} className="group p-3 bg-slate-50 dark:bg-slate-950/50 rounded-lg border border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between hover:border-slate-600 hover:bg-white dark:bg-slate-900 transition-all duration-300">
                                                 <div className="min-w-0 flex items-center gap-3">
-                                                    <div className="w-10 h-10 rounded-md bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-600 group-hover:text-green-500 transition-colors">
+                                                    <div className="w-10 h-10 rounded-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-600 group-hover:text-green-500 transition-colors">
                                                        <Play className="w-4 h-4 fill-current" />
                                                     </div>
                                                     <div>
-                                                        <p className="text-xs text-white font-black truncate max-w-[150px] tracking-tight">{vid.original_filename}</p>
+                                                        <p className="text-xs text-slate-900 dark:text-white font-black truncate max-w-[150px] tracking-tight">{vid.original_filename}</p>
                                                         <div className="flex items-center gap-2 mt-1">
                                                            <Badge className={cn(
                                                                "text-[8px] h-4 px-1.5 font-black uppercase tracking-tighter border-none",
-                                                               vid.status === 'done' ? "bg-green-500/10 text-green-500" : "bg-slate-800 text-slate-500"
+                                                               vid.status === 'done' ? "bg-green-500/10 text-green-500" : "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-500"
                                                            )}>
                                                                {vid.status}
                                                            </Badge>
@@ -345,14 +359,14 @@ export default function SessionDetailPage({ params }) {
                                         ))}
                                     </div>
                                 ) : (
-                                    <div className="py-12 text-center border-2 border-dashed border-slate-800/50 rounded-xl bg-slate-950/30">
-                                        <div className="w-12 h-12 rounded-full bg-slate-900 mx-auto mb-4 flex items-center justify-center text-slate-700 ring-1 ring-slate-800">
+                                    <div className="py-12 text-center border-2 border-dashed border-slate-200/50 dark:border-slate-800/50 rounded-xl bg-slate-50 dark:bg-slate-950/30">
+                                        <div className="w-12 h-12 rounded-full bg-white dark:bg-slate-900 mx-auto mb-4 flex items-center justify-center text-slate-700 ring-1 ring-slate-800">
                                            <Video className="w-6 h-6 opacity-20" />
                                         </div>
-                                        <p className="text-slate-600 text-[10px] font-black mb-4 tracking-widest uppercase">NO MEDIA DETECTED</p>
+                                        <p className="text-slate-500 dark:text-slate-600 text-[10px] font-black mb-4 tracking-widest uppercase">NO MEDIA DETECTED</p>
                                         <Button
                                             size="sm"
-                                            className="bg-slate-800 text-white hover:bg-slate-700 font-black text-[10px] tracking-widest h-8 px-6"
+                                            className="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 font-black text-[10px] tracking-widest h-8 px-6"
                                             onClick={() => router.push(`/sessions/${sessionId}/upload`)}
                                         >
                                             UPLOAD NOW
@@ -366,19 +380,19 @@ export default function SessionDetailPage({ params }) {
                     {/* Right Column (60%) */}
                     <div className="lg:col-span-3">
                         {!analysis ? (
-                            <Card className="h-full min-h-[600px] bg-slate-900 border-2 border-dashed border-slate-800 flex flex-col items-center justify-center p-12 text-center group shadow-inner relative overflow-hidden">
+                            <Card className="h-full min-h-[600px] bg-white dark:bg-slate-900 border-2 border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center p-12 text-center group shadow-inner relative overflow-hidden">
                                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,197,94,0.03),transparent)]" />
-                                <div className="w-28 h-28 rounded-full bg-slate-800/30 flex items-center justify-center text-slate-700 mb-8 group-hover:scale-110 transition-all duration-700 ring-1 ring-slate-800/50 relative z-10">
+                                <div className="w-28 h-28 rounded-full bg-slate-50 dark:bg-slate-800/30 flex items-center justify-center text-slate-700 mb-8 group-hover:scale-110 transition-all duration-700 ring-1 ring-slate-800/50 relative z-10">
                                    <Activity className="w-14 h-14 opacity-20" />
                                    <RefreshCw className="w-6 h-6 absolute animate-spin-slow text-green-500/20" />
                                 </div>
-                                <h2 className="text-3xl font-black text-white tracking-tighter mb-4 relative z-10">NO ANALYSIS DATA</h2>
-                                <p className="text-slate-500 max-w-sm mb-10 text-sm font-medium leading-relaxed relative z-10 uppercase tracking-tight">
+                                <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter mb-4 relative z-10">NO ANALYSIS DATA</h2>
+                                <p className="text-slate-500 dark:text-slate-500 max-w-sm mb-10 text-sm font-medium leading-relaxed relative z-10 uppercase tracking-tight">
                                     Our AI engine hasn't processed this session yet. Kick off the analysis to get detailed insights into performance metrics.
                                 </p>
                                 <Button 
                                     size="lg"
-                                    className="bg-green-600 hover:bg-green-700 text-white font-black px-16 shadow-[0_10px_30px_rgba(34,197,94,0.2)] transition-all hover:scale-105 active:scale-95 relative z-10 h-14 text-sm tracking-widest"
+                                    className="bg-green-600 hover:bg-green-700 text-slate-900 dark:text-white font-black px-16 shadow-[0_10px_30px_rgba(34,197,94,0.2)] transition-all hover:scale-105 active:scale-95 relative z-10 h-14 text-sm tracking-widest"
                                     onClick={handleReanalyze}
                                     disabled={reanalyzing}
                                 >
@@ -394,7 +408,7 @@ export default function SessionDetailPage({ params }) {
                             <Tabs defaultValue={session.session_type === 'batting' ? 'batting' : 'bowling'} className="w-full">
                                 <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
                                     <div className="overflow-x-auto">
-                                        <TabsList className="bg-slate-900/50 border border-slate-800/50 p-1 ring-1 ring-slate-900 w-max">
+                                        <TabsList className="bg-white dark:bg-slate-900/50 border border-slate-200/50 dark:border-slate-800/50 p-1 ring-1 ring-slate-900 w-max">
                                         {(session.session_type === 'bowling' || session.session_type === 'both') && (
                                             <TabsTrigger
                                                 value="bowling"

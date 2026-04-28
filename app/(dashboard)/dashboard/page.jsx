@@ -47,10 +47,10 @@ export default function DashboardPage() {
             <div className="flex-1 p-6">
                 {/* Welcome */}
                 <div className="mb-6">
-                    <h2 className="text-white text-xl font-semibold">
+                    <h2 className="text-slate-900 dark:text-white text-xl font-semibold">
                         Welcome back, {user?.username} 👋
                     </h2>
-                    <p className="text-slate-400 text-sm mt-1">
+                    <p className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-sm mt-1">
                         Here&apos;s what&apos;s happening with your players today.
                     </p>
                 </div>

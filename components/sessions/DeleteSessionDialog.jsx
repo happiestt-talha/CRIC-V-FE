@@ -63,13 +63,13 @@ export default function DeleteSessionDialog({ sessionId, open, onOpenChange, onS
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="bg-slate-950 border-slate-800 text-white sm:max-w-[425px]">
+            <DialogContent className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle className="text-red-500 flex items-center gap-2">
                         <Trash2 className="h-5 w-5" />
                         Delete Session?
                     </DialogTitle>
-                    <DialogDescription className="text-slate-400">
+                    <DialogDescription className="text-slate-500 dark:text-slate-500 dark:text-slate-400">
                         This action is permanent and cannot be undone.
                     </DialogDescription>
                 </DialogHeader>
@@ -82,8 +82,8 @@ export default function DeleteSessionDialog({ sessionId, open, onOpenChange, onS
                     ) : error ? (
                         <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
                             {error}
-                            <Button 
-                                variant="link" 
+                            <Button
+                                variant="link"
                                 className="text-red-400 h-auto p-0 ml-2 underline"
                                 onClick={fetchPreview}
                             >
@@ -95,14 +95,14 @@ export default function DeleteSessionDialog({ sessionId, open, onOpenChange, onS
                             {preview.has_analysis && (
                                 <div className="flex gap-3 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-200 text-xs">
                                     <AlertTriangle className="h-4 w-4 text-red-500 shrink-0" />
-                                    <p>⚠️ This session contains analysis results that will be permanently lost.</p>
+                                    <p className='text-red-600'>⚠️ Analysis results will be permanently lost.</p>
                                 </div>
                             )}
 
                             {preview.has_feedback && (
-                                <div className="flex gap-3 p-3 bg-slate-800/50 border border-slate-700 rounded-lg text-slate-300 text-xs">
+                                <div className="flex gap-3 p-3 bg-slate-100/50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-500 dark:text-slate-600 dark:text-slate-300 text-xs">
                                     <Info className="h-4 w-4 text-blue-400 shrink-0" />
-                                    <p>This session also has coach feedback that will be deleted.</p>
+                                    <p className='text-blue-600'>This session also has coach feedback that will be deleted.</p>
                                 </div>
                             )}
 
@@ -113,7 +113,7 @@ export default function DeleteSessionDialog({ sessionId, open, onOpenChange, onS
                                 </div>
                             )}
 
-                            <p className="text-slate-300 text-sm">
+                            <p className="text-slate-500 dark:text-slate-600 dark:text-slate-300 text-sm">
                                 This will permanently delete <strong>{preview.video_count} video(s)</strong> ({preview.total_size_mb} MB) and all associated data. This action cannot be undone.
                             </p>
                         </div>
@@ -125,7 +125,7 @@ export default function DeleteSessionDialog({ sessionId, open, onOpenChange, onS
                         variant="ghost"
                         onClick={() => onOpenChange(false)}
                         disabled={deleting}
-                        className="text-slate-400 hover:text-white hover:bg-slate-900"
+                        className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
                     >
                         Cancel
                     </Button>
@@ -133,7 +133,7 @@ export default function DeleteSessionDialog({ sessionId, open, onOpenChange, onS
                         variant="destructive"
                         onClick={handleDelete}
                         disabled={deleting || loading || !!error}
-                        className="bg-red-600 hover:bg-red-700 text-white"
+                        className="bg-red-600 hover:bg-red-700 text-slate-900 dark:text-white"
                     >
                         {deleting ? (
                             <>

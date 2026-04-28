@@ -6,24 +6,24 @@ import { User, ArrowRight } from 'lucide-react'
 
 export default function PlayerCard({ player }) {
     return (
-        <Card className="bg-slate-600/50 border-2 border-slate-800 hover:border-green-700 transition-colors">
+        <Card className="bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 hover:border-green-700 transition-colors shadow-sm">
             <CardContent className="p-5">
                 <div className="flex items-start gap-4">
-                    <div className="flex items-center justify-center w-12 h-12 rounded-full bg-green-600/20 text-green-400 text-xl font-bold shrink-0">
+                    <div className="flex items-center justify-center w-12 h-12 rounded-full bg-green-600/20 text-green-700 dark:text-green-400 text-xl font-bold shrink-0">
                         {player.full_name?.charAt(0)?.toUpperCase() || <User />}
                     </div>
                     <div className="flex-1 min-w-0">
-                        <h3 className="text-white font-semibold truncate">
+                        <h3 className="text-slate-900 dark:text-white font-semibold truncate">
                             {player.full_name}
                         </h3>
                         {player.age && (
-                            <p className="text-slate-400 text-sm">Age: {player.age}</p>
+                            <p className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-sm">Age: {player.age}</p>
                         )}
                         <div className="flex flex-wrap gap-2 mt-2">
                             {player.batting_hand && (
                                 <Badge
                                     variant="outline"
-                                    className="text-xs border-slate-700 text-slate-400 capitalize"
+                                    className="text-xs border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-500 dark:text-slate-400 capitalize"
                                 >
                                     {player.batting_hand} hand
                                 </Badge>
@@ -31,7 +31,7 @@ export default function PlayerCard({ player }) {
                             {player.bowling_style && (
                                 <Badge
                                     variant="outline"
-                                    className="text-xs border-slate-700 text-slate-400"
+                                    className="text-xs border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-500 dark:text-slate-400"
                                 >
                                     {player.bowling_style?.replace(/_/g, ' ')}
                                 </Badge>
@@ -43,7 +43,7 @@ export default function PlayerCard({ player }) {
                     <Link href={`/players/${player.id}`}>
                         <Button
                             size="sm"
-                            className="w-full bg-slate-800 hover:bg-slate-700 text-white border border-slate-700"
+                            className="w-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white border border-slate-300 dark:border-slate-700"
                         >
                             View Profile
                             <ArrowRight className="ml-2 h-3 w-3" />

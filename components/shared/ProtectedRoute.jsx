@@ -20,7 +20,7 @@ export default function ProtectedRoute({ children, requireAdmin = false }) {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+            <div className="min-h-screen bg-slate-200 dark:bg-slate-950 flex items-center justify-center">
                 <LoadingSpinner text="Loading CRIC-V..." />
             </div>
         )

@@ -41,27 +41,27 @@ export default function RegisterPage() {
     }
 
     return (
-        <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-slate-200 dark:bg-slate-950 flex items-center justify-center p-4">
             <div className="w-full max-w-md">
                 <div className="text-center mb-8">
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-600 mb-4">
                         <span className="text-2xl">🏏</span>
                     </div>
-                    <h1 className="text-3xl font-bold text-white">CRIC-V</h1>
-                    <p className="text-slate-400 mt-1">Create your account</p>
+                    <h1 className="text-3xl font-bold text-slate-900 dark:text-white">CRIC-V</h1>
+                    <p className="text-slate-500 dark:text-slate-400 mt-1">Create your account</p>
                 </div>
 
-                <Card className="bg-slate-900 border-slate-800">
+                <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-lg">
                     <CardHeader>
-                        <CardTitle className="text-white text-xl">Register</CardTitle>
-                        <CardDescription className="text-slate-400">
+                        <CardTitle className="text-slate-900 dark:text-white text-xl">Register</CardTitle>
+                        <CardDescription className="text-slate-500 dark:text-slate-400">
                             Join the CRIC-V coaching platform
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div className="space-y-2">
-                                <Label htmlFor="email" className="text-slate-300">Email</Label>
+                                <Label htmlFor="email" className="text-slate-700 dark:text-slate-300">Email</Label>
                                 <Input
                                     id="email"
                                     type="email"
@@ -69,11 +69,11 @@ export default function RegisterPage() {
                                     value={form.email}
                                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                                     required
-                                    className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+                                    className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="username" className="text-slate-300">Username</Label>
+                                <Label htmlFor="username" className="text-slate-700 dark:text-slate-300">Username</Label>
                                 <Input
                                     id="username"
                                     type="text"
@@ -81,11 +81,11 @@ export default function RegisterPage() {
                                     value={form.username}
                                     onChange={(e) => setForm({ ...form, username: e.target.value })}
                                     required
-                                    className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+                                    className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="password" className="text-slate-300">Password</Label>
+                                <Label htmlFor="password" className="text-slate-700 dark:text-slate-300">Password</Label>
                                 <PasswordInput
                                     id="password"
                                     placeholder="Min 8 characters"
@@ -93,21 +93,21 @@ export default function RegisterPage() {
                                     onChange={(e) => setForm({ ...form, password: e.target.value })}
                                     required
                                     minLength={8}
-                                    className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+                                    className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label className="text-slate-300">Role</Label>
+                                <Label className="text-slate-700 dark:text-slate-300">Role</Label>
                                 <Select
                                     value={form.role}
                                     onValueChange={(value) => setForm({ ...form, role: value })}
                                 >
-                                    <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+                                    <SelectTrigger className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white">
                                         <SelectValue />
                                     </SelectTrigger>
-                                    <SelectContent className="bg-slate-800 border-slate-700">
-                                        <SelectItem value="coach" className="text-white hover:bg-slate-700">Coach</SelectItem>
-                                        <SelectItem value="player" className="text-white hover:bg-slate-700">Player</SelectItem>
+                                    <SelectContent className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+                                        <SelectItem value="coach" className="text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700">Coach</SelectItem>
+                                        <SelectItem value="player" className="text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700">Player</SelectItem>
                                     </SelectContent>
                                 </Select>
                                 {form.role === 'player' && (
@@ -134,7 +134,7 @@ export default function RegisterPage() {
                                 )}
                             </Button>
                         </form>
-                        <div className="mt-4 text-center text-slate-400 text-sm">
+                        <div className="mt-4 text-center text-slate-500 dark:text-slate-400 text-sm">
                             Already have an account?{' '}
                             <Link href="/login" className="text-green-400 hover:text-green-300 font-medium">
                                 Sign in

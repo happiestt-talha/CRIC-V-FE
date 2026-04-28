@@ -79,16 +79,16 @@ export default function VideoUpload({ onUpload, onUploadComplete }) {
                     'border-2 border-dashed rounded-xl p-8 text-center transition-colors cursor-pointer',
                     dragging
                         ? 'border-green-500 bg-green-500/10'
-                        : 'border-slate-700 hover:border-slate-600 bg-slate-800/50'
+                        : 'border-slate-300 dark:border-slate-700 hover:border-slate-600 bg-slate-100/50 dark:bg-slate-800/50'
                 )}
                 onDragOver={(e) => { e.preventDefault(); setDragging(true) }}
                 onDragLeave={() => setDragging(false)}
                 onDrop={(e) => { e.preventDefault(); setDragging(false); handleFiles(e.dataTransfer.files) }}
                 onClick={() => inputRef.current?.click()}
             >
-                <Upload className="h-10 w-10 text-slate-500 mx-auto mb-3" />
-                <p className="text-white font-medium text-sm">Drop videos here</p>
-                <p className="text-slate-500 text-xs mt-1">or click to browse — Max 500MB</p>
+                <Upload className="h-10 w-10 text-slate-500 dark:text-slate-500 mx-auto mb-3" />
+                <p className="text-slate-900 dark:text-white font-medium text-sm">Drop videos here</p>
+                <p className="text-slate-500 dark:text-slate-500 text-xs mt-1">or click to browse — Max 500MB</p>
                 <input
                     ref={inputRef}
                     type="file"
@@ -102,18 +102,18 @@ export default function VideoUpload({ onUpload, onUploadComplete }) {
             {queue.length > 0 && (
                 <div className="space-y-2 max-h-60 overflow-y-auto pr-2">
                     {queue.map((item) => (
-                        <div key={item.id} className="p-3 bg-slate-800/50 rounded-lg border border-slate-700">
+                        <div key={item.id} className="p-3 bg-slate-100/50 dark:bg-slate-800/50 rounded-lg border border-slate-300 dark:border-slate-700">
                             <div className="flex items-center gap-3">
-                                <File className={cn("h-4 w-4 shrink-0", item.status === 'complete' ? "text-green-400" : "text-slate-400")} />
+                                <File className={cn("h-4 w-4 shrink-0", item.status === 'complete' ? "text-green-400" : "text-slate-500 dark:text-slate-500 dark:text-slate-400")} />
                                 <div className="flex-1 min-w-0">
                                     <div className="flex justify-between items-center mb-1">
-                                        <p className="text-white text-[11px] font-medium truncate pr-4">{item.file.name}</p>
-                                        <span className="text-[10px] text-slate-500 uppercase font-bold">{item.status}</span>
+                                        <p className="text-slate-900 dark:text-white text-[11px] font-medium truncate pr-4">{item.file.name}</p>
+                                        <span className="text-[10px] text-slate-500 dark:text-slate-500 uppercase font-bold">{item.status}</span>
                                     </div>
                                     <Progress value={item.progress} className="h-1 bg-slate-700" />
                                 </div>
                                 {item.status === 'pending' && (
-                                    <Button variant="ghost" size="sm" className="h-6 w-6 p-0 text-slate-500" onClick={() => removeFile(item.id)}>
+                                    <Button variant="ghost" size="sm" className="h-6 w-6 p-0 text-slate-500 dark:text-slate-500" onClick={() => removeFile(item.id)}>
                                         <X className="h-3 w-3" />
                                     </Button>
                                 )}
@@ -125,7 +125,7 @@ export default function VideoUpload({ onUpload, onUploadComplete }) {
             )}
 
             {queue.some(i => i.status === 'pending') && (
-                <Button className="w-full bg-green-600 hover:bg-green-700 text-white" onClick={startUploads} disabled={isUploading}>
+                <Button className="w-full bg-green-600 hover:bg-green-700 text-slate-900 dark:text-white" onClick={startUploads} disabled={isUploading}>
                     {isUploading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Uploading...</> : 'Start Uploading'}
                 </Button>
             )}

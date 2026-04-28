@@ -34,19 +34,19 @@ export default function ForgotPasswordPage() {
     }
 
     return (
-        <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-slate-200 dark:bg-slate-950 flex items-center justify-center p-4">
             <div className="w-full max-w-md">
                 <div className="text-center mb-8">
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-600 mb-4">
                         <span className="text-2xl">🏏</span>
                     </div>
-                    <h1 className="text-3xl font-bold text-white">CRIC-V</h1>
+                    <h1 className="text-3xl font-bold text-slate-900 dark:text-white">CRIC-V</h1>
                 </div>
 
-                <Card className="bg-slate-900 border-slate-800">
+                <Card className="bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
                     <CardHeader>
-                        <CardTitle className="text-white text-xl">Forgot Password</CardTitle>
-                        <CardDescription className="text-slate-400">
+                        <CardTitle className="text-slate-900 dark:text-white text-xl">Forgot Password</CardTitle>
+                        <CardDescription className="text-slate-500 dark:text-slate-500 dark:text-slate-400">
                             {submitted 
                                 ? "If this email is registered, a reset link has been sent to your inbox."
                                 : "Enter your email address and we'll send you a link to reset your password."
@@ -57,7 +57,7 @@ export default function ForgotPasswordPage() {
                         {!submitted ? (
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="email" className="text-slate-300">
+                                    <Label htmlFor="email" className="text-slate-500 dark:text-slate-600 dark:text-slate-300">
                                         Email Address
                                     </Label>
                                     <Input
@@ -67,12 +67,12 @@ export default function ForgotPasswordPage() {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
-                                        className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+                                        className="bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder:text-slate-500"
                                     />
                                 </div>
                                 <Button
                                     type="submit"
-                                    className="w-full bg-green-600 hover:bg-green-700 text-white"
+                                    className="w-full bg-green-600 hover:bg-green-700 text-slate-900 dark:text-white"
                                     disabled={loading}
                                 >
                                     {loading ? (
@@ -87,12 +87,12 @@ export default function ForgotPasswordPage() {
                             </form>
                         ) : (
                             <div className="text-center py-4">
-                                <p className="text-slate-300 mb-6">
+                                <p className="text-slate-500 dark:text-slate-600 dark:text-slate-300 mb-6">
                                     Didn&apos;t receive the email? Check your spam folder or try again.
                                 </p>
                                 <Button 
                                     variant="outline" 
-                                    className="border-slate-700 text-slate-300 hover:bg-slate-800"
+                                    className="border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:bg-slate-800"
                                     onClick={() => setSubmitted(false)}
                                 >
                                     Try another email

@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 @theme {
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -47,6 +49,17 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 142.1 76.2% 36.3%;
     --radius: 0.5rem;
+    
+    --bg-primary: #f1f5f9;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f8fafc;
+    --border-color: #e2e8f0;
+    --text-primary: #0f172a;
+    --text-muted: #64748b;
+    --accent-green: #16a34a;
+    --sidebar-bg: #ffffff;
+    --navbar-bg: rgba(255, 255, 255, 0.9);
+    --input-bg: #ffffff;
   }
 
   .dark {
@@ -69,6 +82,17 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 142.4 71.8% 29.2%;
+
+    --bg-primary: #0f172a;
+    --bg-card: #1e293b;
+    --bg-card-hover: #273549;
+    --border-color: #334155;
+    --text-primary: #f1f5f9;
+    --text-muted: #64748b;
+    --accent-green: #22c55e;
+    --sidebar-bg: #0f172a;
+    --navbar-bg: rgba(15, 23, 42, 0.9);
+    --input-bg: #1e293b;
   }
 }
 
@@ -79,10 +103,70 @@
 
   body {
     @apply bg-background text-foreground;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 }
 
 [data-slot="select-trigger"] [data-placeholder] {
   color: rgb(148 163 184) !important;
   /* slate-400 */
+}
+
+/* Card */
+.card {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Input */
+input, textarea, select {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+/* Dialog/Modal */
+[role="dialog"] {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+/* Dropdown */
+[data-radix-popper-content-wrapper] {
+  --tw-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* View Transitions API for Theme Toggling */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+  animation: fade-out 0.4s ease-in-out forwards;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+  animation: fade-in 0.4s ease-in-out forwards;
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Prevent staggered transitions caused by component-level CSS transition properties */
+.theme-transitioning * {
+  transition: none !important;
 }
