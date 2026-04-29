@@ -188,20 +188,20 @@ export default function SessionAnalyzePage() {
 
                 <div className="space-y-8">
                     {/* Header Actions */}
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 bg-[#1e293b] rounded-xl border border-slate-300 dark:border-slate-700">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 bg-white dark:bg-[#1e293b] rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
                         <div>
                             <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
                                 <PlayCircle className="h-5 w-5 text-green-500" />
                                 Ready to Analyze
                             </h2>
-                            <p className="text-slate-500 dark:text-slate-500 dark:text-slate-400 text-sm mt-1">
+                            <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
                                 {videos.length} videos available for processing in this session.
                             </p>
                         </div>
                         <Button 
                             onClick={handleTriggerAll} 
                             disabled={isProcessing || videos.length === 0}
-                            className="bg-green-600 hover:bg-green-700 text-slate-900 dark:text-white px-8"
+                            className="bg-green-600 hover:bg-green-700 text-white px-8"
                         >
                             {isProcessing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : '🚀 Analyze All Videos'}
                         </Button>
@@ -209,7 +209,7 @@ export default function SessionAnalyzePage() {
 
                     {/* Progress Panel */}
                     {isProcessing && (
-                        <Card className="bg-[#1e293b] border-green-500/50 shadow-lg shadow-green-500/5 animate-in fade-in slide-in-from-top-4 duration-500">
+                        <Card className="bg-white dark:bg-[#1e293b] border-green-500/30 shadow-lg shadow-green-500/5 animate-in fade-in slide-in-from-top-4 duration-500">
                             <CardHeader className="pb-2">
                                 <div className="flex justify-between items-center">
                                     <CardTitle className="text-slate-900 dark:text-white text-lg flex items-center gap-2">
@@ -223,7 +223,7 @@ export default function SessionAnalyzePage() {
                             <CardContent className="space-y-6">
                                 <div className="space-y-2">
                                     <Progress value={progressData?.percent} className="h-2 bg-slate-100 dark:bg-slate-800 transition-all duration-500" />
-                                    <p className="text-sm text-slate-500 dark:text-slate-500 dark:text-slate-400 italic">Current Stage: {progressData?.stage}</p>
+                                    <p className="text-sm text-slate-500 dark:text-slate-400 italic">Current Stage: {progressData?.stage}</p>
                                 </div>
 
                                 <div className="space-y-4">
@@ -240,7 +240,7 @@ export default function SessionAnalyzePage() {
                                                 <span className={cn(
                                                     "text-sm font-medium",
                                                     status === 'active' ? "text-slate-900 dark:text-white" : 
-                                                    status === 'complete' ? "text-slate-500 dark:text-slate-600 dark:text-slate-300" : "text-slate-500 dark:text-slate-500"
+                                                    status === 'complete' ? "text-slate-500 dark:text-slate-400" : "text-slate-400 dark:text-slate-600"
                                                 )}>
                                                     {stage}
                                                 </span>
@@ -264,7 +264,7 @@ export default function SessionAnalyzePage() {
                             </div>
                             <Button 
                                 onClick={() => router.push(`/sessions/${id}`)}
-                                className="bg-green-600 hover:bg-green-700 text-slate-900 dark:text-white text-xs h-8"
+                                className="bg-green-600 hover:bg-green-700 text-white text-xs h-8"
                             >
                                 View Detailed Results <ArrowRight className="ml-2 h-3 w-3" />
                             </Button>
@@ -295,7 +295,7 @@ export default function SessionAnalyzePage() {
                         <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Individual Videos</h3>
                         <div className="grid grid-cols-1 gap-3">
                             {videos.map((video) => (
-                                <Card key={video.id} className="bg-[#1e293b] border-slate-300 dark:border-slate-700">
+                                <Card key={video.id} className="bg-white dark:bg-[#1e293b] border-slate-200 dark:border-slate-700">
                                     <CardContent className="p-4 flex items-center justify-between">
                                         <div className="flex items-center gap-3">
                                             <div className="h-10 w-10 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0">

@@ -80,7 +80,7 @@ export default function Navbar({ title = 'Dashboard' }) {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
-                        className="w-56 bg-slate-900 border-slate-800 text-white"
+                        className="w-56 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white"
                         align="end"
                     >
                         <DropdownMenuLabel className="font-normal">

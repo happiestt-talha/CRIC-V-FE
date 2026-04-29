@@ -10,10 +10,12 @@ import VideoUpload from '@/components/sessions/VideoUpload'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import UrlImport from '@/components/sessions/UrlImport'
 import { sessionsApi } from '@/lib/api/sessions'
 import { analysisApi } from '@/lib/api/analysis'
 import { toast } from 'sonner'
-import { Trash2, Play, CheckCircle2, Clock, Loader2, Video as VideoIcon } from 'lucide-react'
+import { Trash2, Play, CheckCircle2, Clock, Loader2, Video as VideoIcon, Link } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 
 import DeleteSessionDialog from '@/components/sessions/DeleteSessionDialog'
@@ -113,15 +115,34 @@ export default function SessionUploadPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Left: Upload Zone */}
                     <div className="lg:col-span-1">
-                        <Card className="bg-[#1e293b] border-slate-300 dark:border-slate-700">
+                        <Card className="bg-white dark:bg-[#1e293b] border-slate-200 dark:border-slate-700 shadow-sm">
                             <CardHeader>
-                                <CardTitle className="text-sm font-semibold">Upload New Videos</CardTitle>
+                                <CardTitle className="text-sm font-semibold">Import Training Video</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <VideoUpload 
-                                    onUpload={handleUpload} 
-                                    onUploadComplete={fetchData}
-                                />
+                                <Tabs defaultValue="upload" className="w-full">
+                                    <TabsList className="bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 mb-6 w-full p-1 h-auto">
+                                        <TabsTrigger value="upload" className="flex-1 py-2 data-[state=active]:bg-white dark:data-[state=active]:bg-slate-800 text-slate-500 dark:text-slate-400 data-[state=active]:text-slate-900 dark:data-[state=active]:text-white font-black text-[10px] uppercase tracking-wider gap-2 transition-all">
+                                            <VideoIcon className="h-3.5 w-3.5" />
+                                            Upload File
+                                        </TabsTrigger>
+                                        <TabsTrigger value="url" className="flex-1 py-2 data-[state=active]:bg-green-600 data-[state=active]:text-white text-slate-500 dark:text-slate-400 font-black text-[10px] uppercase tracking-wider gap-2 transition-all">
+                                            <Link className="h-3.5 w-3.5" />
+                                            From URL
+                                        </TabsTrigger>
+                                    </TabsList>
+
+                                    <TabsContent value="upload">
+                                        <VideoUpload 
+                                            onUpload={handleUpload} 
+                                            onUploadComplete={fetchData}
+                                        />
+                                    </TabsContent>
+
+                                    <TabsContent value="url">
+                                        <UrlImport sessionId={id} onSuccess={fetchData} />
+                                    </TabsContent>
+                                </Tabs>
                             </CardContent>
                         </Card>
                     </div>
@@ -141,7 +162,7 @@ export default function SessionUploadPage() {
                         ) : (
                             <div className="space-y-3">
                                 {videos.map((video) => (
-                                    <Card key={video.id} className="bg-[#1e293b] border-slate-300 dark:border-slate-700 hover:border-slate-600 transition-colors">
+                                    <Card key={video.id} className="bg-white dark:bg-[#1e293b] border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors">
                                         <CardContent className="p-4 flex items-center gap-4">
                                             <div className="h-12 w-12 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0">
                                                 <VideoIcon className="h-6 w-6 text-slate-500 dark:text-slate-500" />
@@ -161,9 +182,9 @@ export default function SessionUploadPage() {
                                             <div className="flex items-center gap-2">
                                                 <Badge className={cn(
                                                     "text-[10px] uppercase font-bold",
-                                                    video.status === 'done' ? "bg-green-500/20 text-green-400 border-green-500/50" :
-                                                    video.status === 'analyzing' ? "bg-blue-500/20 text-blue-400 border-blue-500/50" :
-                                                    "bg-slate-700 text-slate-500 dark:text-slate-500 dark:text-slate-400"
+                                                    video.status === 'done' ? "bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/30" :
+                                                    video.status === 'analyzing' ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30" :
+                                                    "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400"
                                                 )}>
                                                     {video.status}
                                                 </Badge>
@@ -179,7 +200,7 @@ export default function SessionUploadPage() {
                                                 <Button
                                                     size="sm"
                                                     variant="outline"
-                                                    className="h-8 border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:bg-slate-800"
+                                                    className="h-8 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
                                                     onClick={() => router.push(`/sessions/${id}/analyze?video=${video.id}`)}
                                                 >
                                                     <Play className="h-3 w-3 mr-1" /> Analyze
@@ -194,7 +215,7 @@ export default function SessionUploadPage() {
                         {videos.length > 0 && (
                             <div className="pt-4 flex justify-end">
                                 <Button
-                                    className="bg-green-600 hover:bg-green-700 text-slate-900 dark:text-white"
+                                    className="bg-green-600 hover:bg-green-700 text-white"
                                     onClick={() => router.push(`/sessions/${id}/analyze`)}
                                 >
                                     Proceed to Analysis

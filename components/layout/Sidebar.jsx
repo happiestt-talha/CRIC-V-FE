@@ -31,13 +31,13 @@ const navItems = [
     { label: 'Players', href: '/players', icon: Users },
     { label: 'Sessions', href: '/sessions', icon: Video },
     { label: 'Analysis', href: '/analysis', icon: BarChart2 },
-    { label: 'Profile', href: '/profile', icon: UserCircle },
+    // { label: 'Profile', href: '/profile', icon: UserCircle },
 ]
 
 export default function Sidebar() {
     const pathname = usePathname()
     const { user } = useAuth()
-    const { isCollapsed, isMobileOpen, closeMobile } = useSidebar()
+    const { isCollapsed, isMobileOpen, closeMobile, toggle } = useSidebar()
     const [isHovered, setIsHovered] = useState(false)
 
     // Sidebar is visually collapsed only if pinned AND not hovered
@@ -46,7 +46,7 @@ export default function Sidebar() {
     const NavItem = ({ item }) => {
         const Icon = item.icon
         const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))
-        
+
         const content = (
             <Link
                 href={item.href}
@@ -85,14 +85,14 @@ export default function Sidebar() {
         <>
             {/* Mobile Backdrop */}
             {isMobileOpen && (
-                <div 
+                <div
                     className="fixed inset-0 bg-black/50 z-40 lg:hidden transition-opacity duration-300"
                     onClick={closeMobile}
                 />
             )}
 
             {/* Sidebar Container */}
-            <aside 
+            <aside
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 className={cn(
@@ -121,10 +121,26 @@ export default function Sidebar() {
                         )}
                     </div>
 
+                    {/* Desktop Toggle Button */}
+                    {!effectiveCollapsed && (
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={toggle}
+                            className="hidden lg:flex h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all duration-300"
+                        >
+                            {isCollapsed ? (
+                                <ChevronRight className="h-5 w-5" />
+                            ) : (
+                                <ChevronLeft className="h-5 w-5" />
+                            )}
+                        </Button>
+                    )}
+
                     {/* Mobile Close Button */}
-                    <Button 
-                        variant="ghost" 
-                        size="icon" 
+                    <Button
+                        variant="ghost"
+                        size="icon"
                         onClick={closeMobile}
                         className="lg:hidden h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                     >
