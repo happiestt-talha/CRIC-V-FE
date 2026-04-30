@@ -1,32 +1,19 @@
-'use client'
+import LandingPage from './LandingPage'
 
-import dynamic from 'next/dynamic'
+export const metadata = {
+  title: 'AI Cricket Coaching & Biomechanical Analysis — Free for Pakistani Academies',
+  description: 'CRIC-V gives grassroots cricket coaches in Pakistan professional-grade AI analysis. 33-point pose estimation, 95% ball tracking accuracy, ICC elbow compliance checking, pitch heatmaps — all free, no special hardware needed.',
+  alternates: {
+    canonical: 'https://cric-v.live',
+  },
+  openGraph: {
+    title: 'CRIC-V — Free AI Cricket Coaching for Pakistan',
+    description: 'Professional biomechanical cricket analysis for grassroots academies. Works with any camera. Free forever.',
+    url: 'https://cric-v.live',
+    images: [{ url: '/og/og-landing.jpg', width: 1200, height: 630 }],
+  },
+}
 
-const HeroSection = dynamic(() => import('@/components/landing/HeroSection'), { ssr: false })
-import NavBar from '@/components/landing/NavBar'
-import SkeletonSection from '@/components/landing/SkeletonSection'
-import FeaturesSection from '@/components/landing/FeaturesSection'
-import HowItWorksSection from '@/components/landing/HowItWorksSection'
-import StatsSection from '@/components/landing/StatsSection'
-import PitchHeatmapSection from '@/components/landing/PitchHeatmapSection'
-import CTASection from '@/components/landing/CTASection'
-import Footer from '@/components/landing/Footer'
-import SmoothScroll from '@/components/landing/SmoothScroll'
-
-export default function HomePage() {
-  return (
-    <SmoothScroll>
-      <main className="cricv-root">
-        <NavBar />
-        <HeroSection />
-        <SkeletonSection />
-        <FeaturesSection />
-        <HowItWorksSection />
-        <StatsSection />
-        <PitchHeatmapSection />
-        <CTASection />
-        <Footer />
-      </main>
-    </SmoothScroll>
-  )
+export default function Home() {
+  return <LandingPage />
 }
